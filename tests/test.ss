@@ -28,7 +28,7 @@ __kernel void square(
 END
    ))
 
-(define HOW-MANY 512 #;(* 1024 1024 24)) 
+(define HOW-MANY (* 1024 1024 24)) 
 (define input-v (malloc _float HOW-MANY 'raw))
 (define output-v (malloc _float HOW-MANY 'raw))
 (define how-much-mem (* HOW-MANY (ctype-sizeof _float)))
@@ -153,7 +153,8 @@ END
     (iprintf "~a = ~a~n"
              ci (context-info ctxt ci))))
 
-(for ([p (in-list (cons #f (cvector->list (system-platforms))))])
+; XXX #f is supposed to be allowed by the driver, but may not be
+(for ([p (in-list (cvector->list (system-platforms)))])
   (iprintf "Platform is ~a~n" p)
   (indent
    (iprintf "Platform Info~n")

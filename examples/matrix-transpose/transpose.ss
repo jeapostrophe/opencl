@@ -24,8 +24,14 @@
   (ptr-set! h-data _float (+ (* i width) j) (* 10.0 (random))))
 
 (printf "Getting device, context, and queue~n")
-(define devices (platform-devices #f 'CL_DEVICE_TYPE_GPU))
-(define device-id (cvector-ref devices 0))
+
+(define p (first (cvector->list (system-platforms))))
+(define gpu-devices (platform-devices p 'CL_DEVICE_TYPE_DEFAULT))
+(define device-id (cvector-ref gpu-devices 0))
+
+(unless device-id
+ (error 'transpose "No valid GPU device found on any platform"))
+
 (define context (devices->context (vector device-id)))
 (define queue (make-command-queue context device-id empty))
 
@@ -106,13 +112,13 @@
 (command-queue-finish! queue)
 
 (printf "Comparing results~n")
-(define error -inf.0)
+(define max-err -inf.0)
 (for* ([l (in-range width)]
        [k (in-range height)])
   (define diff 
     (abs (- (ptr-ref reference _float (+ (* l height) k))
             (ptr-ref h-result _float (+ (* l (+ height PADDING)) k)))))
-  (set! error (max error diff)))
+  (set! max-err (max max-err diff)))
 
 (printf "Freeing everything~n")
 (free h-data)
@@ -125,4 +131,4 @@
 (command-queue-release! queue)
 (context-release! context)
 
-(printf "Maximum error was ~a~n" error)
+(printf "Maximum error was ~a~n" max-err)
