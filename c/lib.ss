@@ -8,6 +8,8 @@
      (build-path "/System" "Library" "Frameworks" "OpenCL.framework" "OpenCL")]
     [(windows)
      (build-path (getenv "WINDIR") "system32" "OpenCL")]
+    [(unix)
+     "libOpenCL"]
     [else
      (error 'opencl "This platform is not (yet) supported.")]))
 
