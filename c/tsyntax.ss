@@ -76,7 +76,7 @@
                  (thing-doc _id/null/c contract?
                             @{A contract for @scheme[_id] values that includes NULL pointers, represented by @scheme[#f].})
                  (thing-doc _id_vector/c contract?
-                            @{A contract for cvectors of @scheme[_id] values.})))))]))
+                            @{A contract for @scheme[cvector]s of @scheme[_id] values.})))))]))
 
 (define-syntax (define-opencl-cstruct stx)
   (syntax-case stx ()

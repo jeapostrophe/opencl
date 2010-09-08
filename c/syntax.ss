@@ -99,7 +99,7 @@
                        ()
                        . ->d .
                        [value _vtype/c])
-                      @{Returns the value associated with @scheme[param_name] for the argument(s). Implemented by @scheme[id] with @scheme[param_value_size] passed explicitly. Uses @scheme[id:length] to find the maximum value. Valid @scheme[param_name]s are @scheme['(vparam_name ...)].})
+                      @{Returns the value associated with @scheme[param_name] for the argument(s). Implemented by @scheme[id] with @scheme[param_value_size] passed explicitly. Valid @scheme[param_name]s are @scheme['(vparam_name ...)].})
             ...)
            ; Dispatcher
            (define id-selector-map (make-hasheq))
