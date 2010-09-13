@@ -1,21 +1,26 @@
 #lang racket
 (require "../../c.ss")
+(require "../utils/utils.rkt")
 (require ffi/cvector)
 (require ffi/unsafe/cvector)
 
 (printf "oclDeviceQuery Starting...~n~n")
-(printf "OpenCL SW Info:~n~n")
+(printf "OpenCL SW Info:~n")
 
 (define firstPlatform (cvector-ref (clGetPlatformIDs:vector) 0))
-(clGetPlatformInfo:generic firstPlatform 'CL_PLATFORM_NAME)
-(clGetPlatformInfo:generic firstPlatform 'CL_PLATFORM_VERSION)
+(printf " CL_PLATFORM_NAME:\t~a~n" (clGetPlatformInfo:generic firstPlatform 'CL_PLATFORM_NAME))
+(printf " CL_PLATFORM_VERSION\t~a~n" (clGetPlatformInfo:generic firstPlatform 'CL_PLATFORM_VERSION))
 
-(printf "OpenCL Device Info:~n~n")
+(printf "~nOpenCL Device Info:~n")
 
-(printf "~a devices found supporting OpenCL~n" 
+(printf "~a devices found supporting OpenCL~n~n" 
         (clGetDeviceIDs:count firstPlatform 'CL_DEVICE_TYPE_ALL))
 
-(define cpuDevice (cvector-ref (clGetDeviceIDs:vector firstPlatform 'CL_DEVICE_TYPE_CPU) 0))
-(define gpuDevice (cvector-ref (clGetDeviceIDs:vector firstPlatform 'CL_DEVICE_TYPE_GPU) 0))
-(clGetDeviceInfo:generic cpuDevice 'CL_DEVICE_NAME)
-(clGetDeviceInfo:generic gpuDevice 'CL_DEVICE_NAME)
+(define devices (clGetDeviceIDs:vector firstPlatform 'CL_DEVICE_TYPE_ALL))
+
+(for ([device (in-list (cvector->list devices))])
+  (printf "--------------------------~n~a~n"
+          (clGetDeviceInfo:generic device 'CL_DEVICE_NAME))
+  (printf "--------------------------~n")
+  (printDeviceInfo device)
+  (display "\n\n"))
