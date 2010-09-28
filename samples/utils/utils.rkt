@@ -6,6 +6,18 @@
 (provide printDeviceInfo)
 (provide deltaT)
 (provide cvector->vector)
+(provide roundUp)
+(provide fillArray)
+
+(define (fillArray data size)
+  (for ([i (in-range size)])
+    (ptr-set! data _cl_float i (* 4294967087 (random)))))
+
+(define (roundUp groupSize globalSize)
+  (define r (remainder globalSize groupSize))
+  (if (equal? r 0)
+      globalSize
+      (- (+ globalSize groupSize) r)))
 
 (define (cvector->vector cv)
   (build-vector (cvector-length cv)
