@@ -2,8 +2,29 @@
 (require "../../c.ss")
 (require ffi/cvector)
 (require ffi/unsafe/cvector)
-(provide printDeviceInfo)
 
+(provide printDeviceInfo)
+(provide deltaT)
+(provide cvector->vector)
+
+(define (cvector->vector cv)
+  (build-vector (cvector-length cv)
+                (curry cvector-ref cv)))
+
+(define timer0 0)
+(define timer1 0)
+(define timer2 0)
+(define (deltaT which)
+  (define newTime (current-inexact-milliseconds))
+  (define delta 0)
+  (match which
+    [0 (set! delta (- newTime timer0))
+       (set! timer0 newTime)]
+    [1 (set! delta (- newTime timer1))
+       (set! timer1 newTime)]
+    [2 (set! delta (- newTime timer2))
+       (set! timer2 newTime)])
+  (/ delta 1000))
 
 (define (printDeviceInfo device)
   (printf "  CL_DEVICE_NAME: \t\t\t~a~n"
