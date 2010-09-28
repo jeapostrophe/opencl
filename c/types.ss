@@ -10,6 +10,7 @@
 (define-opencl-alias _cl_uint _uint32 exact-nonnegative-integer?)
 (define-opencl-alias _cl_int _int32 exact-integer?)
 (define-opencl-alias _cl_ulong _uint64 exact-nonnegative-integer?)
+(define-opencl-alias _cl_float _float inexact-real?)
 
 (define-opencl-enum _cl_bool _cl_uint _cl_bool-values _cl_bool/c
   (CL_FALSE CL_TRUE))
