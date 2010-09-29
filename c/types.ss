@@ -1,5 +1,8 @@
 #lang scheme/base
 (require scheme/foreign
+         (for-syntax scheme
+                     syntax/parse
+                     unstable/syntax)
          (except-in scheme/contract ->)
          (file "include/cl.ss")
          (file "tsyntax.ss"))
@@ -11,6 +14,23 @@
 (define-opencl-alias _cl_int _int32 exact-integer?)
 (define-opencl-alias _cl_ulong _uint64 exact-nonnegative-integer?)
 (define-opencl-alias _cl_float _float inexact-real?)
+
+(define-syntax (define-opencl-vector-alias stx)
+  (syntax-parse 
+   stx
+   [(_ _type:id N:number)
+    (let ([Nnum (syntax->datum #'N)])
+      (with-syntax
+          ([(fi ...)
+            (for/list ([i (in-range Nnum)])
+              (format-id stx "f~a" i))]
+           [_typeN
+            (format-id stx "~a~a" #'_type Nnum)])
+        (syntax/loc stx
+          (define-cstruct _typeN
+            ([fi _type] ...)))))]))
+
+(define-opencl-vector-alias _cl_float 4)
 
 (define-opencl-enum _cl_bool _cl_uint _cl_bool-values _cl_bool/c
   (CL_FALSE CL_TRUE))
