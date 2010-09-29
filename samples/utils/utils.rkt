@@ -2,16 +2,26 @@
 (require "../../c.ss")
 (require ffi/cvector)
 (require ffi/unsafe/cvector)
+(require ffi/unsafe)
 
 (provide printDeviceInfo)
 (provide deltaT)
 (provide cvector->vector)
 (provide roundUp)
 (provide fillArray)
+(provide compareArrays)
+
+(define (compareArrays data ref numElements [epsilon 0.001])
+  (define errorCount 0)
+  (for ([i (in-range numElements)])
+    (define diff (abs (- (ptr-ref ref _cl_float i) (ptr-ref data _cl_float i))))
+    (when (> diff epsilon) (set! errorCount (+ 1 errorCount))))
+  (when (> errorCount 0) (printf "Total # of errors = ~a~n" errorCount))
+  (equal? errorCount 0))
 
 (define (fillArray data size)
   (for ([i (in-range size)])
-    (ptr-set! data _cl_float i (* 4294967087 (random)))))
+    (ptr-set! data _cl_float i (* 42087 (random)))))
 
 (define (roundUp groupSize globalSize)
   (define r (remainder globalSize groupSize))
