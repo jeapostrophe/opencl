@@ -1,4 +1,4 @@
-#lang scheme
+#lang racket
 
 (define HOW-MANY (* 1024 (expt 2 10)))
 

@@ -1,7 +1,7 @@
-#lang scheme
-(require (planet jaymccarthy/opencl/scheme)
-         scheme/foreign
-         scheme/runtime-path)
+#lang racket
+(require (planet jaymccarthy/opencl/racket)
+         racket/foreign
+         racket/runtime-path)
 (unsafe!)
 
 (define (cvector->vector cv)

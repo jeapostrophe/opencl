@@ -1,5 +1,5 @@
 #lang planet jaymccarthy/superc
-(require scheme/unsafe/ops)
+(require racket/unsafe/ops)
 
 (define loop (get-ffi-obj 'loop this-lib (_fun _int _pointer -> _void)))
 

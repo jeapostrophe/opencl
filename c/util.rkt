@@ -1,6 +1,6 @@
-#lang scheme
-(require scheme/foreign
-         (prefix-in c: scheme/contract))
+#lang racket
+(require racket/foreign
+         (prefix-in c: racket/contract))
 
 (define ((cvector-of? type) cv)
   (and (cvector? cv)

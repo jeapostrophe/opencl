@@ -1,12 +1,12 @@
-#lang scheme/base
-(require scheme/foreign
-         (file "include/cl.ss")
-         (file "syntax.ss")
-         (file "types.ss"))
+#lang racket/base
+(require racket/foreign
+         (file "include/cl.rkt")
+         (file "syntax.rkt")
+         (file "types.rkt"))
 (require scribble/srcdoc)
-(require/doc scheme/base
+(require/doc racket/base
              scribble/manual
-             (for-label (file "../../c/types.ss")))
+             (for-label (file "../../c/types.rkt")))
 
 ;;; clGetDeviceIDs
 (define-opencl-count

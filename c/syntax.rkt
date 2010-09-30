@@ -1,15 +1,15 @@
-#lang at-exp scheme/base
-(require scheme/foreign
-         (except-in scheme/contract ->)
-         scheme/local
-         (for-syntax scheme/base
-                     scheme/function)
-         (file "include/cl.ss")
-         (file "lib.ss")
-         (file "tsyntax.ss")
-         (file "types.ss"))
+#lang at-exp racket/base
+(require racket/foreign
+         (except-in racket/contract ->)
+         racket/local
+         (for-syntax racket/base
+                     racket/function)
+         (file "include/cl.rkt")
+         (file "lib.rkt")
+         (file "tsyntax.rkt")
+         (file "types.rkt"))
 (require scribble/srcdoc)
-(require/doc scheme/base
+(require/doc racket/base
              scribble/manual)
 
 (define-syntax (define-opencl-info stx)
@@ -36,7 +36,7 @@
              (error 'id "This function behaves differently for each type. Please use ~a or one of ~a." 'id:selector '(id:_ftype ... id:_vtype ...)))
            (provide/doc
             (thing-doc id procedure?
-                       @{A dummy Scheme function that refers callers to the other @scheme[id]-based functions which access the true C function.}))
+                       @{A dummy Racket function that refers callers to the other @racket[id]-based functions which access the true C function.}))
            ; Return status
            (define (id-return status success)
              (if (= status CL_SUCCESS)
@@ -59,7 +59,7 @@
                        ()
                        . ->d .
                        [length _size_t/c])
-                      @{Returns the size of @scheme[param_name] field of the argument(s). Calls @scheme[id] with values for @scheme[_param_value_size] and @scheme[_param_value] such that @scheme[param_value_size_ret] is queried.}))
+                      @{Returns the size of @racket[param_name] field of the argument(s). Calls @racket[id] with values for @racket[_param_value_size] and @racket[_param_value] such that @racket[param_value_size_ret] is queried.}))
            ; Fixed length
            (define-opencl id:_ftype id
              (_fun [arg_id : _arg_type]
@@ -78,7 +78,7 @@
                        ()
                        . ->d .
                        [value _ftype/c])
-                      @{Returns the value associated with @scheme[param_name] for the argument(s). Implemented by @scheme[id] with @scheme[_param_value_size] set to @scheme[(ctype-sizeof _ftype)] so that the value is queried. Valid @scheme[param_name]s are @scheme['(fparam_name ...)].})
+                      @{Returns the value associated with @racket[param_name] for the argument(s). Implemented by @racket[id] with @racket[_param_value_size] set to @racket[(ctype-sizeof _ftype)] so that the value is queried. Valid @racket[param_name]s are @racket['(fparam_name ...)].})
             ...)
            ; Variable length
            (define-opencl id:_vtype id
@@ -99,7 +99,7 @@
                        ()
                        . ->d .
                        [value _vtype/c])
-                      @{Returns the value associated with @scheme[param_name] for the argument(s). Implemented by @scheme[id] with @scheme[param_value_size] passed explicitly. Valid @scheme[param_name]s are @scheme['(vparam_name ...)].})
+                      @{Returns the value associated with @racket[param_name] for the argument(s). Implemented by @racket[id] with @racket[param_value_size] passed explicitly. Valid @racket[param_name]s are @racket['(vparam_name ...)].})
             ...)
            ; Dispatcher
            (define id-selector-map (make-hasheq))
@@ -126,14 +126,14 @@
            (define id/c (or/c _ftype/c ... _vtype/c ...))
            (provide/doc
             (thing-doc id/c contract?
-                       @{A contract for the return values of @scheme[id:selector]. Its definition is: @scheme[(or/c _ftype/c ... _vtype/c ...)].})
+                       @{A contract for the return values of @racket[id:selector]. Its definition is: @racket[(or/c _ftype/c ... _vtype/c ...)].})
             (proc-doc id:selector
                       (([arg_id _arg_type/c] ...
                         [param_name _param_type/c])
                        ()
                        . ->d .
                        [value id/c])
-                      @{Returns the value associated with @scheme[param_name] for the argument(s). Selects the appropriate @scheme[id]-based function to extract the appropriate value, automatically providing the right length for variable length functions.})))))]))
+                      @{Returns the value associated with @racket[param_name] for the argument(s). Selects the appropriate @racket[id]-based function to extract the appropriate value, automatically providing the right length for variable length functions.})))))]))
 
 (define-syntax define-opencl-count
   (syntax-rules (error :)
@@ -175,20 +175,20 @@
                    ()
                    . ->d .
                    [how-many _cl_uint/c])
-                  @{Returns how many results @scheme[id] may return for these arguments.})
+                  @{Returns how many results @racket[id] may return for these arguments.})
         (proc-doc id
                   (([arg _arg_type/c] ...
                     [how-many _cl_uint/c])
                    ()
                    . ->d .
                    (values [rets _return_type_vector/c] [how-many-possible _cl_uint/c]))
-                  @{Returns the minimum of @scheme[how-many] and @scheme[how-many-possible] values in @scheme[rets].})
+                  @{Returns the minimum of @racket[how-many] and @racket[how-many-possible] values in @racket[rets].})
         (proc-doc id:extract
                   (([arg _arg_type/c] ...)
                    ()
                    . ->d .
                    [rets _return_type_vector/c])
-                  @{Returns all possible results from @scheme[id] using @scheme[id:count] to extract the number available.})))]))
+                  @{Returns all possible results from @racket[id] using @racket[id:count] to extract the number available.})))]))
 
 (provide define-opencl-info
          define-opencl-count)

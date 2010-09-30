@@ -1,11 +1,11 @@
-#lang at-exp scheme/base
-(require scheme/foreign
-         (except-in scheme/contract ->)
-         (for-syntax scheme/base
-                     scheme/function)
-         (file "util.ss"))
+#lang at-exp racket/base
+(require racket/foreign
+         (except-in racket/contract ->)
+         (for-syntax racket/base
+                     racket/function)
+         (file "util.rkt"))
 (require scribble/srcdoc)
-(require/doc scheme/base
+(require/doc racket/base
              scribble/manual)
 
 (define-syntax-rule (define-opencl-bitfield _type _cl_bitfield valid-options _type/c
@@ -19,11 +19,11 @@
          (define valid-options the-symbols)
          (provide/doc
           (thing-doc _type ctype?
-                     @{A ctype that represents an OpenCL bitfield where @scheme[valid-options] are the valid flags. It is actually a @scheme[_cl_bitfield].})
+                     @{A ctype that represents an OpenCL bitfield where @racket[valid-options] are the valid flags. It is actually a @racket[_cl_bitfield].})
           (thing-doc _type/c contract?
-                     @{A contract for @scheme[_type] that accepts any symbol in @scheme[valid-options] or lists containing subsets of @scheme[valid-options].})
+                     @{A contract for @racket[_type] that accepts any symbol in @racket[valid-options] or lists containing subsets of @racket[valid-options].})
           (thing-doc valid-options (listof symbol?)
-                     @{A list of valid options for @scheme[_type]. Its value is @scheme['(value ...)].}))))
+                     @{A list of valid options for @racket[_type]. Its value is @racket['(value ...)].}))))
 
 (define-syntax-rule (define-opencl-enum _type base-type valid-options _type/c
                       (value ...))
@@ -36,11 +36,11 @@
          (define valid-options the-symbols)
          (provide/doc
           (thing-doc _type ctype?
-                     @{A ctype that represents an OpenCL enumeration, implemented by @scheme[base-type], where @scheme[valid-options] are the valid values.})
+                     @{A ctype that represents an OpenCL enumeration, implemented by @racket[base-type], where @racket[valid-options] are the valid values.})
           (thing-doc _type/c contract?
-                     @{A contract for @scheme[_type] that accepts any symbol in @scheme[valid-options].})
+                     @{A contract for @racket[_type] that accepts any symbol in @racket[valid-options].})
           (thing-doc valid-options (listof symbol?)
-                     @{A list of valid options for @scheme[_type]. Its value is @scheme['(value ...)].}))))
+                     @{A list of valid options for @racket[_type]. Its value is @racket['(value ...)].}))))
 
 (define-for-syntax (stxformat fmt stx . others)
   (datum->syntax stx (string->symbol (apply format fmt (syntax->datum stx) 
@@ -72,11 +72,11 @@
                  (thing-doc _id/null ctype?
                             @{Represents a pointer to a particular kind of OpenCL object that may be NULL.})
                  (thing-doc _id/c contract?
-                            @{A contract for @scheme[_id] values.})
+                            @{A contract for @racket[_id] values.})
                  (thing-doc _id/null/c contract?
-                            @{A contract for @scheme[_id] values that includes NULL pointers, represented by @scheme[#f].})
+                            @{A contract for @racket[_id] values that includes NULL pointers, represented by @racket[#f].})
                  (thing-doc _id_vector/c contract?
-                            @{A contract for @scheme[cvector]s of @scheme[_id] values.})))))]))
+                            @{A contract for @racket[cvector]s of @racket[_id] values.})))))]))
 
 (define-syntax (define-opencl-cstruct stx)
   (syntax-case stx ()
@@ -113,17 +113,17 @@
                    (thing-doc _id-pointer ctype?
                               @{Represents a pointer to a particular kind of OpenCL object.})
                    (proc-doc make-id (->d ([field _type/c] ...) () [_ _id/c])
-                             @{Constructs a @scheme[_id] value.})
+                             @{Constructs a @racket[_id] value.})
                    (proc-doc _id-field (->d ([obj _id/c]) () [_ _type/c])
-                             @{Extracts the @scheme[field] of a @scheme[_id] value.})
+                             @{Extracts the @racket[field] of a @racket[_id] value.})
                    ...
                    (proc-doc set-_id-field! (->d ([obj _id/c] [v _type/c]) () [_ void])
-                             @{Sets the @scheme[field] of a @scheme[_id] value.})
+                             @{Sets the @racket[field] of a @racket[_id] value.})
                    ...
                    (thing-doc _id/c contract?
-                              @{A contract for @scheme[_id] values.})
+                              @{A contract for @racket[_id] values.})
                    (thing-doc _id_vector/c contract?
-                              @{A contract for cvectors of @scheme[_id] values.}))))))]))
+                              @{A contract for cvectors of @racket[_id] values.}))))))]))
 
 (define-syntax (define-opencl-alias stx)
   (syntax-case stx ()
@@ -136,11 +136,11 @@
                 (define _opencl_type_vector/c (cvector-of? _opencl_type))
                 (provide/doc
                  (thing-doc _opencl_type ctype?
-                            @{An alias for @scheme[_ctype].})
+                            @{An alias for @racket[_ctype].})
                  (thing-doc _opencl_type/c contract?
-                            @{A contract for @scheme[_opencl_type] values. Defined as @scheme[contract-expr].})
+                            @{A contract for @racket[_opencl_type] values. Defined as @racket[contract-expr].})
                  (thing-doc _opencl_type_vector/c contract?
-                            @{A contract for vectors of @scheme[_opencl_type] values.})))))]))
+                            @{A contract for vectors of @racket[_opencl_type] values.})))))]))
 
 (provide define-opencl-bitfield
          define-opencl-enum

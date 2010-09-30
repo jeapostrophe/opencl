@@ -1,4 +1,4 @@
-#lang scheme/base
+#lang racket/base
 
 (define CL_SUCCESS 0)
 (define CL_DEVICE_NOT_FOUND -1)

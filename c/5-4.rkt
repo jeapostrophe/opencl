@@ -1,14 +1,14 @@
-#lang at-exp scheme/base
-(require scheme/foreign
-         (except-in scheme/contract ->)
+#lang at-exp racket/base
+(require racket/foreign
+         (except-in racket/contract ->)
          scribble/srcdoc  
-         (file "include/cl.ss")
-         (file "lib.ss")
-         (file "syntax.ss")
-         (file "types.ss"))
-(require/doc scheme/base
+         (file "include/cl.rkt")
+         (file "lib.rkt")
+         (file "syntax.rkt")
+         (file "types.rkt"))
+(require/doc racket/base
              scribble/manual
-             (for-label (file "../../c/types.ss")))
+             (for-label (file "../../c/types.rkt")))
 
 ;;;;
 (define-opencl clCreateProgramWithSource

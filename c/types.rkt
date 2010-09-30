@@ -1,13 +1,13 @@
-#lang scheme/base
-(require scheme/foreign
-         (for-syntax scheme
+#lang racket/base
+(require racket/foreign
+         (for-syntax racket
                      syntax/parse
                      unstable/syntax)
-         (except-in scheme/contract ->)
-         (file "include/cl.ss")
-         (file "tsyntax.ss"))
+         (except-in racket/contract ->)
+         (file "include/cl.rkt")
+         (file "tsyntax.rkt"))
 (require scribble/srcdoc)
-(require/doc scheme/base
+(require/doc racket/base
              scribble/manual)
 
 (define-opencl-alias _cl_uint _uint32 exact-nonnegative-integer?)

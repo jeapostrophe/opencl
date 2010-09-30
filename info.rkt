@@ -4,7 +4,7 @@
   (list "An FFI for OpenCL"))
 (define scribblings '(["scribblings/opencl.scrbl" (multi-page)]))
 (define categories '(devtools))
-(define primary-file "scheme.ss")
+(define primary-file "racket.rkt")
 (define compile-omit-paths '("examples" "tests"))
 (define version "1.0.48")
 (define release-notes 

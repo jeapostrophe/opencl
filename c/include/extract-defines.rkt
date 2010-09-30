@@ -1,6 +1,6 @@
-#lang scheme
-(require scheme/port
-         scheme/system)
+#lang racket
+(require racket/port
+         racket/system)
 
 (define define-regexp #rx"^#define +([^ ]+) +([^ ]+.*)$")
 
@@ -29,7 +29,7 @@
 #include <stdio.h>
 
 int main(void) {
- printf("#lang scheme/base\n\n");
+ printf("#lang racket/base\n\n");
 
 END
            filename

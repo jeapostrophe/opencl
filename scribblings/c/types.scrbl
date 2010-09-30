@@ -2,11 +2,16 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          (planet cce/scheme:4:1/planet)
-          (for-label scheme/foreign
-                     "../../c/types.ss"))
+          unstable/planet
+          unstable/scribble
+          unstable/require
+          (for-label racket/foreign
+                     (this-package-in c)
+                     (this-package-in racket))
+          (for-label racket/foreign
+                     "../../c/types.rkt"))
 
 @title[#:tag "Types"]{Types}
 
-@defmodule/this-package[c/types #:use-sources () ("../../c/types.ss")]
-@include-extracted[(file "../../c/types.ss")]
+@defmodule/this-package[c/types #:use-sources () ("../../c/types.rkt")]
+@include-extracted[(file "../../c/types.rkt")]

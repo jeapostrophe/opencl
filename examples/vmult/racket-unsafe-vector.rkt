@@ -1,5 +1,5 @@
-#lang scheme
-(require scheme/unsafe/ops)
+#lang racket
+(require racket/unsafe/ops)
 
 (define HOW-MANY (read))
 (define the-vector (make-vector HOW-MANY 0))

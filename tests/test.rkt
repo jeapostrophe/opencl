@@ -1,7 +1,7 @@
-#lang scheme
-(require scheme/foreign
-         "../c.ss"
-         "../scheme.ss")
+#lang racket
+(require racket/foreign
+         "../c.rkt"
+         "../racket.rkt")
 (unsafe!)
 
 (define current-indent (make-parameter 0))
@@ -137,7 +137,7 @@ END
       (local [(define i (random HOW-MANY))]
         (define iv (ptr-ref input-v _float i))
         (define ov (ptr-ref output-v _float i))
-        (iprintf "~a. input[~a] opencl-output[~a] scheme-output[~a]~n"
+        (iprintf "~a. input[~a] opencl-output[~a] racket-output[~a]~n"
                  i iv ov (* iv iv)))
       
       (clReleaseMemObject input)

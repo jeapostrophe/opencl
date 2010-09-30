@@ -1,9 +1,9 @@
-#lang at-exp scheme
+#lang at-exp racket
 (require scribble/srcdoc
-         (file "c.ss"))
-(require/doc scheme/base
+         (file "c.rkt"))
+(require/doc racket/base
              scribble/manual
-             (for-label (file "../c.ss")))
+             (for-label (file "../c.rkt")))
 
 ; XXX Add auto-release on objects w/ refcounts
 ; XXX Add synchronization to events
@@ -14,7 +14,7 @@
          ...
          (provide/doc
           [thing-doc new any/c
-                     @{@scheme[old] from the C API.}]
+                     @{@racket[old] from the C API.}]
           ...)))
 
 ;;;;;;;;;;

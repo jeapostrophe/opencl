@@ -2,20 +2,25 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          (planet cce/scheme:4:1/planet)
-          (for-label scheme/foreign
-                     "../../c/types.ss"
-                     "../../c/5.ss"
-                     "../../c/5-1.ss"
-                     "../../c/5-2.ss"
-                     "../../c/5-3.ss"
-                     "../../c/5-4.ss"
-                     "../../c/5-5.ss"
-                     "../../c/5-6.ss"
-                     "../../c/5-7.ss"
-                     "../../c/5-8.ss"
-                     "../../c/5-9.ss"
-                     "../../c/5-10.ss"))
+          unstable/planet
+          unstable/scribble
+          unstable/require
+          (for-label racket/foreign
+                     (this-package-in c)
+                     (this-package-in racket))
+          (for-label racket/foreign
+                     "../../c/types.rkt"
+                     "../../c/5.rkt"
+                     "../../c/5-1.rkt"
+                     "../../c/5-2.rkt"
+                     "../../c/5-3.rkt"
+                     "../../c/5-4.rkt"
+                     "../../c/5-5.rkt"
+                     "../../c/5-6.rkt"
+                     "../../c/5-7.rkt"
+                     "../../c/5-8.rkt"
+                     "../../c/5-9.rkt"
+                     "../../c/5-10.rkt"))
 
 @title[#:tag "5" #:style 'toc]{The OpenCL Runtime}
 
@@ -24,41 +29,41 @@
 @local-table-of-contents[]
 
 @section[#:tag "5.1"]{Command Queues}
-@defmodule/this-package[c/5-1 #:use-sources () ("../../c/5-1.ss")]
-@include-extracted[(file "../../c/5-1.ss")]
+@defmodule/this-package[c/5-1 #:use-sources () ("../../c/5-1.rkt")]
+@include-extracted[(file "../../c/5-1.rkt")]
 
 @section[#:tag "5.2"]{Memory Objects}
-@defmodule/this-package[c/5-2 #:use-sources () ("../../c/5-2.ss")]
-@include-extracted[(file "../../c/5-2.ss")]
+@defmodule/this-package[c/5-2 #:use-sources () ("../../c/5-2.rkt")]
+@include-extracted[(file "../../c/5-2.rkt")]
 
 @section[#:tag "5.3"]{Sampler Objects}
-@defmodule/this-package[c/5-3 #:use-sources () ("../../c/5-3.ss")]
-@include-extracted[(file "../../c/5-3.ss")]
+@defmodule/this-package[c/5-3 #:use-sources () ("../../c/5-3.rkt")]
+@include-extracted[(file "../../c/5-3.rkt")]
 
 @section[#:tag "5.4"]{Program Objects}
-@defmodule/this-package[c/5-4 #:use-sources () ("../../c/5-4.ss")]
-@include-extracted[(file "../../c/5-4.ss")]
+@defmodule/this-package[c/5-4 #:use-sources () ("../../c/5-4.rkt")]
+@include-extracted[(file "../../c/5-4.rkt")]
 
 @section[#:tag "5.5"]{Kernel Objects}
-@defmodule/this-package[c/5-5 #:use-sources () ("../../c/5-5.ss")]
-@include-extracted[(file "../../c/5-5.ss")]
+@defmodule/this-package[c/5-5 #:use-sources () ("../../c/5-5.rkt")]
+@include-extracted[(file "../../c/5-5.rkt")]
 
 @section[#:tag "5.6"]{Executing Kernels}
-@defmodule/this-package[c/5-6 #:use-sources () ("../../c/5-6.ss")]
-@include-extracted[(file "../../c/5-6.ss")]
+@defmodule/this-package[c/5-6 #:use-sources () ("../../c/5-6.rkt")]
+@include-extracted[(file "../../c/5-6.rkt")]
 
 @section[#:tag "5.7"]{Event Objects}
-@defmodule/this-package[c/5-7 #:use-sources () ("../../c/5-7.ss")]
-@include-extracted[(file "../../c/5-7.ss")]
+@defmodule/this-package[c/5-7 #:use-sources () ("../../c/5-7.rkt")]
+@include-extracted[(file "../../c/5-7.rkt")]
 
 @section[#:tag "5.8"]{Out-of-order Execution of Kernels and Memory Object Commands}
-@defmodule/this-package[c/5-8 #:use-sources () ("../../c/5-8.ss")]
-@include-extracted[(file "../../c/5-8.ss")]
+@defmodule/this-package[c/5-8 #:use-sources () ("../../c/5-8.rkt")]
+@include-extracted[(file "../../c/5-8.rkt")]
 
 @section[#:tag "5.9"]{Profiling Operations on Memory Objects and Kernels}
-@defmodule/this-package[c/5-9 #:use-sources () ("../../c/5-9.ss")]
-@include-extracted[(file "../../c/5-9.ss")]
+@defmodule/this-package[c/5-9 #:use-sources () ("../../c/5-9.rkt")]
+@include-extracted[(file "../../c/5-9.rkt")]
 
 @section[#:tag "5.10"]{Flush and Finish}
-@defmodule/this-package[c/5-10 #:use-sources () ("../../c/5-10.ss")]
-@include-extracted[(file "../../c/5-10.ss")]
+@defmodule/this-package[c/5-10 #:use-sources () ("../../c/5-10.rkt")]
+@include-extracted[(file "../../c/5-10.rkt")]

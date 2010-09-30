@@ -1,9 +1,9 @@
-#lang scheme/base
-(require (file "c/types.ss")
-         (file "c/4.ss")
-         (file "c/5.ss"))
+#lang racket/base
+(require (file "c/types.rkt")
+         (file "c/4.rkt")
+         (file "c/5.rkt"))
 (provide
  (all-from-out
-  (file "c/types.ss")
-  (file "c/4.ss")
-  (file "c/5.ss")))
+  (file "c/types.rkt")
+  (file "c/4.rkt")
+  (file "c/5.rkt")))
