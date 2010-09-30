@@ -27,8 +27,10 @@
            [_typeN
             (format-id stx "~a~a" #'_type Nnum)])
         (syntax/loc stx
-          (define-cstruct _typeN
-            ([fi _type] ...)))))]))
+          (begin
+            (define-cstruct _typeN
+              ([fi _type] ...))
+            (provide _typeN)))))]))
 
 (define-opencl-vector-alias _cl_float 4)
 
