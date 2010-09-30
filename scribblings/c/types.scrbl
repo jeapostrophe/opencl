@@ -9,5 +9,5 @@
 
 @title[#:tag "Types"]{Types}
 
-@defmodule/this-package[c/types #:use-sources () ("../../c/types.rkt")]
+@defmodule/this-package[c/types]
 @include-extracted[(file "../../c/types.rkt")]

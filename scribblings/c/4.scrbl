@@ -17,13 +17,13 @@
 @local-table-of-contents[]
 
 @section[#:tag "4.1"]{Querying Platform Info}
-@defmodule/this-package[c/4-1 #:use-sources () ("../../c/4-1.rkt")]
+@defmodule/this-package[c/4-1]
 @include-extracted[(file "../../c/4-1.rkt")]
 
 @section[#:tag "4.2"]{Querying Devices}
-@defmodule/this-package[c/4-2 #:use-sources () ("../../c/4-2.rkt")]
+@defmodule/this-package[c/4-2]
 @include-extracted[(file "../../c/4-2.rkt")]
 
 @section[#:tag "4.3"]{Contexts}
-@defmodule/this-package[c/4-3 #:use-sources () ("../../c/4-3.rkt")]
+@defmodule/this-package[c/4-3]
 @include-extracted[(file "../../c/4-3.rkt")]
