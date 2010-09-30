@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          (for-syntax racket/base
                      racket/function)
          (file "util.rkt"))
@@ -113,17 +114,17 @@
                    (thing-doc _id-pointer ctype?
                               @{Represents a pointer to a particular kind of OpenCL object.})
                    (proc-doc/names make-id 
-                                   (-> _type/c ... _id/c)
-                                   ((field ...) ())
+                                   (c:-> _type/c ... _id/c)
+                                   (field ...)
                                    @{Constructs a @racket[_id] value.})
                    (proc-doc/names _id-field 
-                                   (-> _id/c _type/c)
-                                   ((obj) ())
+                                   (c:-> _id/c _type/c)
+                                   (obj)
                                    @{Extracts the @racket[field] of a @racket[_id] value.})
                    ...
                    (proc-doc/names set-_id-field! 
-                                   (-> _id/c _type/c _void)
-                                   ((obj v) ())
+                                   (c:-> _id/c _type/c _void)
+                                   (obj v)
                                    @{Sets the @racket[field] of a @racket[_id] value.})
                    ...
                    (thing-doc _id/c contract?

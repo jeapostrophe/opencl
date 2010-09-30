@@ -6,8 +6,7 @@
           unstable/scribble
           (for-label ffi/unsafe
                      "../../c.rkt"
-                     "../../racket.rkt")
-          (for-label ffi/unsafe
+                     "../../racket.rkt"
                      "../../c/types.rkt"
                      "../../c/5.rkt"
                      "../../c/5-1.rkt"

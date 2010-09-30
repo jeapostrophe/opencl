@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -58,16 +59,15 @@
           [else
            (error 'clEnqueueNDRangeKernel "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc
+ [proc-doc/names
   clEnqueueNDRangeKernel
-  (->d ([cq _cl_command_queue/c]
-        [kernel _cl_kernel/c]
-        [dim (and/c _cl_uint/c (between/c 1 3))]
-        [global-size (vectorof _size_t/c)]
-        [local-size (vectorof _size_t/c)]
-        [wait-list (vectorof _cl_event/c)])
-       ()
-       [evt _cl_event/c])
+  (c:-> _cl_command_queue/c _cl_kernel/c
+        (and/c _cl_uint/c (between/c 1 3))
+        (vectorof _size_t/c)
+        (vectorof _size_t/c)
+        (vectorof _cl_event/c)
+        _cl_event/c)
+  (cq kernel dim global-size local-size wait-list)
   @{}])
 
 ;;;; clEnqueueTask
@@ -105,12 +105,10 @@
           [else
            (error 'clEnqueueTask "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueTask
-           (->d ([cq _cl_command_queue/c]
-                 [kernel _cl_kernel/c]
-                 [wait-list (vectorof _cl_event/c)])
-                ()
-                [evt _cl_event/c])
+ [proc-doc/names clEnqueueTask
+           (c:-> _cl_command_queue/c _cl_kernel/c (vectorof _cl_event/c)
+                 _cl_event/c)
+           (cq kernel wait-list)
            @{}])
 
 ;;;; XXX clEnqueueNativeKernel

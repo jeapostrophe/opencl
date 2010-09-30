@@ -2,6 +2,7 @@
 (require ffi/unsafe
          ffi/unsafe/cvector
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -51,12 +52,11 @@
            (error 'clCreateContext "Invalid error code: ~e"
                   errcode_ret)])))
 (provide/doc
- (proc-doc clCreateContext
-           (([devices (vectorof _cl_device_id/c)])
-            ()
-            . ->d .
-            [ctxt _cl_context/c])
-           @{}))
+ (proc-doc/names
+  clCreateContext
+  (c:-> (vectorof _cl_device_id/c) _cl_context/c)
+  (devices)
+  @{}))
 
 ;;;;
 (define-opencl clCreateContextFromType  
@@ -98,12 +98,11 @@
            (error 'clCreateContextFromType "Invalid error code: ~e"
                   errcode_ret)])))
 (provide/doc
- (proc-doc clCreateContextFromType
-           (([device_type _cl_device_type/c])
-            ()
-            . ->d .
-            [ctxt _cl_context/c])
-           @{}))
+ (proc-doc/names
+  clCreateContextFromType
+  (c:-> _cl_device_type/c _cl_context/c)
+  (device_type)
+  @{}))
 
 ;;;;
 (define-opencl clRetainContext
@@ -120,12 +119,11 @@
            (error 'clRetainContext "Invalid error code: ~e"
                   status)])))
 (provide/doc
- (proc-doc clRetainContext
-           (([ctxt _cl_context/c])
-            ()
-            . ->d .
-            [v void])
-           @{}))
+ (proc-doc/names
+  clRetainContext
+  (c:-> _cl_context/c void)
+  (ctxt)
+  @{}))
 
 ;;;;
 (define-opencl clReleaseContext
@@ -142,12 +140,11 @@
            (error 'clReleaseContext "Invalid error code: ~e"
                   status)])))
 (provide/doc
- (proc-doc clReleaseContext
-           (([ctxt _cl_context/c])
-            ()
-            . ->d .
-            [v void])
-           @{}))
+ (proc-doc/names 
+  clReleaseContext
+  (c:-> _cl_context/c void)
+  (ctxt)
+  @{}))
 
 ;;;; clGetContextInfo
 (define-opencl-info

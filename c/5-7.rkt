@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -27,8 +28,9 @@
               [else
                (error 'clWaitForEvents "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clWaitForEvents
-           (->d ([wait-list (vectorof _cl_event/c)]) () [_ void])
+ [proc-doc/names clWaitForEvents
+           (c:-> (vectorof _cl_event/c) void)
+           (wait-list)
            @{}])
 
 ;;;; clGetEventInfo
@@ -60,7 +62,8 @@
                  [else
                   (error 'clRetainEvent "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clRetainEvent (->d ([evt _cl_event/c]) () [_ void]) @{}])
+ [proc-doc/names clRetainEvent (c:-> _cl_event/c void)
+                 (evt) @{}])
 (define-opencl clReleaseEvent
   (_fun [event : _cl_event]
         -> [status : _cl_int]
@@ -70,4 +73,5 @@
                  [else
                   (error 'clReleaseEvent "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clReleaseEvent (->d ([evt _cl_event/c]) () [_ void]) @{}])
+ [proc-doc/names clReleaseEvent (c:-> _cl_event/c void)
+                 (evt) @{}])

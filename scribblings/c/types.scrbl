@@ -6,8 +6,7 @@
           unstable/scribble
           (for-label ffi/unsafe
                      "../../c.rkt"
-                     "../../racket.rkt")
-          (for-label ffi/unsafe
+                     "../../racket.rkt"
                      "../../c/types.rkt"))
 
 @title[#:tag "Types"]{Types}

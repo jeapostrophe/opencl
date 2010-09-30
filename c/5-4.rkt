@@ -2,6 +2,7 @@
 (require ffi/unsafe
          ffi/unsafe/cvector
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -33,12 +34,10 @@
           [else
            (error 'clCreateProgramWithSource "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clCreateProgramWithSource
-  (([ctxt _cl_context/c]
-    [source (vectorof bytes?)])
-   () . ->d .
-   [program _cl_program/c])
+  (c:-> _cl_context/c (vectorof bytes?) _cl_program/c)
+  (ctxt source)
   @{}])
 
 ;;;;
@@ -63,24 +62,21 @@
           [(= errcode_ret CL_INVALID_DEVICE)
            (error 'clCreateProgramWithBinary "OpenCL devices listed in device_list are not in the list of devices associated with context")]
           [(= errcode_ret CL_INVALID_BINARY)
-           ; XXX Return specifix error based on binary_status
+           ; XXX Return specific error based on binary_status
            (error 'clCreateProgramWithBinary "an invalid program binary was encountered for some device")]
           [(= errcode_ret CL_OUT_OF_HOST_MEMORY)
            (error 'clCreateProgramWithBinary "there is a failure to allocate resources required by the OpenCL implementation on the host")]
           [else
            (error 'clCreateProgramWithBinary "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc
+ [proc-doc/names
   clCreateProgramWithBinary 
-  (->d ([ctxt _cl_context/c]
-        [devices (vectorof _cl_device_id/c)]
-        [binaries (vectorof bytes?)])
-       ()
-       ; XXX
-       #;#:pre-cond
-       #;(= (vector-length devices)
-            (vector-length binaries))
-       [_ _cl_program/c])
+  (c:-> _cl_context/c (vectorof _cl_device_id/c) (vectorof bytes?)
+        _cl_program/c)
+  (ctxt devices binaries)
+  ; XXX
+  #;(= (vector-length devices)
+       (vector-length binaries))
   @{}])
 
 ;;;;
@@ -93,9 +89,10 @@
                  [else
                   (error 'clRetainProgram "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clRetainProgram
-  (([program _cl_program/c]) () . ->d . [_ void])
+  (c:-> _cl_program/c void)
+  (program)
   @{}])
 (define-opencl clReleaseProgram
   (_fun [program : _cl_program]
@@ -106,9 +103,10 @@
                  [else
                   (error 'clReleaseProgram "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clReleaseProgram
-  (([program _cl_program/c]) () . ->d . [_ void])
+  (c:-> _cl_program/c void)
+  (program)
   @{}])
 
 ;;;;
@@ -149,11 +147,10 @@
               [else
                (error 'clBuildProgram "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clBuildProgram
-  (([program _cl_program/c]
-    [devices (vectorof _cl_device_id/c)]
-    [options bytes?]) () . ->d . [_v void])
+  (c:-> _cl_program/c (vectorof _cl_device_id/c) bytes? void)
+  (program devices options)
   @{}])
 
 ;;;;
@@ -162,9 +159,10 @@
         -> (cond [(= status CL_SUCCESS) (void)]
                  [else (error 'clUnloadCompiler "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clUnloadCompiler
-           (->d () () [_ void])
-           @{}])
+ [proc-doc/names clUnloadCompiler
+                 (c:-> void)
+                 ()
+                 @{}])
 
 ;;;;
 ;;; XXX support CL_PROGRAM_BINARIES

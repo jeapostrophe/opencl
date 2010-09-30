@@ -2,6 +2,7 @@
 (require ffi/unsafe
          ffi/unsafe/cvector
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          racket/local
          (for-syntax racket/base
                      racket/function)
@@ -54,13 +55,10 @@
                    -> [status : _cl_int]
                    -> (id-return status (lambda () param_value_size_ret))))
            (provide/doc
-            (proc-doc id:length
-                      (([arg_id _arg_type/c] ...
-                        [param_name _param_type/c])
-                       ()
-                       . ->d .
-                       [length _size_t/c])
-                      @{Returns the size of @racket[param_name] field of the argument(s). Calls @racket[id] with values for @racket[_param_value_size] and @racket[_param_value] such that @racket[param_value_size_ret] is queried.}))
+            (proc-doc/names id:length
+                            (c:-> _arg_type/c ... _param_type/c _size_t/c)
+                            (arg_id ... param_name)
+                            @{Returns the size of @racket[param_name] field of the argument(s). Calls @racket[id] with values for @racket[_param_value_size] and @racket[_param_value] such that @racket[param_value_size_ret] is queried.}))
            ; Fixed length
            (define-opencl id:_ftype id
              (_fun [arg_id : _arg_type]
@@ -73,13 +71,10 @@
                    -> (id-return status (lambda () param_value))))
            ...
            (provide/doc
-            (proc-doc id:_ftype
-                      (([arg_id _arg_type/c] ...
-                        [param_name _param_type/c])
-                       ()
-                       . ->d .
-                       [value _ftype/c])
-                      @{Returns the value associated with @racket[param_name] for the argument(s). Implemented by @racket[id] with @racket[_param_value_size] set to @racket[(ctype-sizeof _ftype)] so that the value is queried. Valid @racket[param_name]s are @racket['(fparam_name ...)].})
+            (proc-doc/names id:_ftype
+                            (c:-> _arg_type/c ... _param_type/c _ftype/c)
+                            (arg_id  ... param_name)
+                            @{Returns the value associated with @racket[param_name] for the argument(s). Implemented by @racket[id] with @racket[_param_value_size] set to @racket[(ctype-sizeof _ftype)] so that the value is queried. Valid @racket[param_name]s are @racket['(fparam_name ...)].})
             ...)
            ; Variable length
            (define-opencl id:_vtype id
@@ -93,13 +88,9 @@
                    -> (id-return status (lambda () param_value))))
            ...
            (provide/doc
-            (proc-doc id:_vtype
-                      (([arg_id _arg_type/c] ...
-                        [param_name _param_type/c]
-                        [param_value_size _size_t/c])
-                       ()
-                       . ->d .
-                       [value _vtype/c])
+            (proc-doc/names id:_vtype
+                      (c:-> _arg_type/c ... _param_type/c _size_t/c _vtype/c)
+                      (arg_id ... param_name param_value_size)
                       @{Returns the value associated with @racket[param_name] for the argument(s). Implemented by @racket[id] with @racket[param_value_size] passed explicitly. Valid @racket[param_name]s are @racket['(vparam_name ...)].})
             ...)
            ; Dispatcher
@@ -128,13 +119,10 @@
            (provide/doc
             (thing-doc id/c contract?
                        @{A contract for the return values of @racket[id:selector]. Its definition is: @racket[(or/c _ftype/c ... _vtype/c ...)].})
-            (proc-doc id:selector
-                      (([arg_id _arg_type/c] ...
-                        [param_name _param_type/c])
-                       ()
-                       . ->d .
-                       [value id/c])
-                      @{Returns the value associated with @racket[param_name] for the argument(s). Selects the appropriate @racket[id]-based function to extract the appropriate value, automatically providing the right length for variable length functions.})))))]))
+            (proc-doc/names id:selector
+                            (c:-> _arg_type/c ... _param_type/c id/c)
+                            (arg_id ... param_name)
+                            @{Returns the value associated with @racket[param_name] for the argument(s). Selects the appropriate @racket[id]-based function to extract the appropriate value, automatically providing the right length for variable length functions.})))))]))
 
 (define-syntax define-opencl-count
   (syntax-rules (error :)
@@ -171,25 +159,19 @@
              (local [(define-values (rs nrs) (id arg ... how-many))]
                rs)))
        (provide/doc
-        (proc-doc id:count
-                  (([arg _arg_type/c] ...)
-                   ()
-                   . ->d .
-                   [how-many _cl_uint/c])
-                  @{Returns how many results @racket[id] may return for these arguments.})
-        (proc-doc id
-                  (([arg _arg_type/c] ...
-                    [how-many _cl_uint/c])
-                   ()
-                   . ->d .
-                   (values [rets _return_type_vector/c] [how-many-possible _cl_uint/c]))
-                  @{Returns the minimum of @racket[how-many] and @racket[how-many-possible] values in @racket[rets].})
-        (proc-doc id:extract
-                  (([arg _arg_type/c] ...)
-                   ()
-                   . ->d .
-                   [rets _return_type_vector/c])
-                  @{Returns all possible results from @racket[id] using @racket[id:count] to extract the number available.})))]))
+        (proc-doc/names id:count
+                        (c:-> _arg_type/c ... _cl_uint/c)
+                        (arg ...)
+                        @{Returns how many results @racket[id] may return for these arguments.})
+        (proc-doc/names id
+                        (c:-> _arg_type/c ... _cl_uint/c
+                              (values _return_type_vector/c _cl_uint/c))
+                        (arg ... how-many)
+                        @{Returns the minimum of @racket[how-many] and @racket[how-many-possible] values in @racket[rets].})
+        (proc-doc/names id:extract
+                        (c:-> _arg_type/c ... _return_type_vector/c)
+                        (arg ...)
+                        @{Returns all possible results from @racket[id] using @racket[id:count] to extract the number available.})))]))
 
 (provide define-opencl-info
          define-opencl-count)

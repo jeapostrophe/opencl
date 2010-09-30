@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -38,14 +39,11 @@
            (error 'clCreateCommandQueue "Invalid error code: ~e"
                   errcode_ret)])))
 (provide/doc
- (proc-doc clCreateCommandQueue
-           (([ctxt _cl_context/c]
-             [device _cl_device_id/c]
-             [properties _cl_command_queue_properties/c])
-            ()
-            . ->d .
-            [cq _cl_command_queue/c])
-           @{}))
+ (proc-doc/names
+  clCreateCommandQueue
+  (c:-> _cl_context/c _cl_device_id/c _cl_command_queue_properties/c _cl_command_queue/c)
+  (ctxt device properties)
+  @{}))
 
 (define-opencl clRetainCommandQueue
   (_fun [command_queue : _cl_command_queue]
@@ -59,12 +57,11 @@
               (error 'clRetainCommandQueue "Invalid error code: ~e" 
                      status)])))
 (provide/doc
- (proc-doc clRetainCommandQueue
-           (([cq _cl_command_queue/c])
-            ()
-            . ->d .
-            [v void])
-           @{}))
+ (proc-doc/names
+  clRetainCommandQueue
+  (c:-> _cl_command_queue/c void)
+  (cq)
+  @{}))
 
 ;;;;
 (define-opencl clReleaseCommandQueue
@@ -79,12 +76,11 @@
               (error 'clReleaseCommandQueue "Invalid error code: ~e" 
                      status)])))
 (provide/doc
- (proc-doc clReleaseCommandQueue
-           (([cq _cl_command_queue/c])
-            ()
-            . ->d .
-            [v void])
-           @{}))
+ (proc-doc/names
+  clReleaseCommandQueue
+  (c:-> _cl_command_queue/c void)
+  (cq)
+  @{}))
 
 ;;;; clGetCommandQueueInfo
 (define-opencl-info clGetCommandQueueInfo
@@ -131,11 +127,9 @@
               (error 'clSetCommandQueueProperty "Invalid error code: ~e"
                      status)])))
 (provide/doc
- (proc-doc clSetCommandQueueProperty
-           (([cq _cl_command_queue/c]
-             [properties _cl_command_queue_properties/c]
-             [enable _cl_bool/c])
-            ()
-            . ->d .
-            [old-properties _cl_command_queue_properties/c])
-           @{}))
+ (proc-doc/names
+  clSetCommandQueueProperty
+  (c:-> _cl_command_queue/c _cl_command_queue_properties/c _cl_bool/c
+        _cl_command_queue_properties/c)
+  (cq properties enable)
+  @{}))

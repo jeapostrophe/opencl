@@ -5,8 +5,7 @@
           unstable/scribble
           (for-label ffi/unsafe
                      "../c.rkt"
-                     "../racket.rkt")
-          (for-label "../c.rkt"))
+                     "../racket.rkt"))
 
 @title[#:tag "C" #:style 'toc]{C API Reference}
 

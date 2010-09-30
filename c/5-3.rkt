@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -33,15 +34,10 @@
           [else
            (error 'clCreateSampler "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clCreateSampler
-  (([ctxt _cl_context/c]
-    [normalized? _cl_bool/c]
-    [addressing-mode _cl_addressing_mode/c]
-    [filter-mode _cl_filter_mode/c])
-   ()
-   . ->d .
-   [sampler _cl_sampler/c])
+  (c:-> _cl_context/c _cl_bool/c _cl_addressing_mode/c _cl_filter_mode/c _cl_sampler/c)
+  (ctxt normalized? addressing-mode filter-mode)
   @{}])
 
 ;;;;
@@ -54,12 +50,10 @@
                  [else
                   (error 'clRetainSampler "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clRetainSampler
-  (([sampler _cl_sampler/c])
-   ()
-   . ->d .
-   [v void])
+  (c:-> _cl_sampler/c void)
+  (sampler)
   @{}])
 
 ;;;;
@@ -72,12 +66,10 @@
                  [else
                   (error 'clReleaseSampler "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clReleaseSampler
-  (([sampler _cl_sampler/c])
-   ()
-   . ->d .
-   [v void])
+  (c:-> _cl_sampler/c void)
+  (sampler)
   @{}])
 
 ;;;;

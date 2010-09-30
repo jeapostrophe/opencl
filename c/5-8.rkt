@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -27,7 +28,8 @@
           [else
            (error 'clEnqueueMarker "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueMarker (->d ([cq _cl_command_queue/c]) () [evt _cl_event/c]) @{}])
+ [proc-doc/names clEnqueueMarker (c:-> _cl_command_queue/c _cl_event/c)
+                 (cq) @{}])
 
 ;;;; clEnqueueWaitForEvents
 (define-opencl clEnqueueWaitForEvents
@@ -51,11 +53,9 @@
           [else
            (error 'clEnqueueWaitForEvents "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueWaitForEvents 
-           (->d ([cq _cl_command_queue/c]
-                 [wait-list (vectorof _cl_event/c)])
-                ()
-                [_ void]) @{}])
+ [proc-doc/names clEnqueueWaitForEvents 
+           (c:-> _cl_command_queue/c (vectorof _cl_event/c) void)
+           (cq wait-list) @{}])
 
 ;;;; clEnqueueBarrier
 (define-opencl clEnqueueBarrier
@@ -73,4 +73,5 @@
           [else
            (error 'clEnqueueBarrier "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueBarrier (->d ([cq _cl_command_queue/c]) () [_ void]) @{}])
+ [proc-doc/names clEnqueueBarrier (c:-> _cl_command_queue/c void)
+                 (cq) @{}])

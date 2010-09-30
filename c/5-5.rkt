@@ -2,6 +2,7 @@
 (require ffi/unsafe
          ffi/unsafe/cvector
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -37,12 +38,10 @@
           [else
            (error 'clCreateKernel "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc 
+ [proc-doc/names
   clCreateKernel
-  (->d ([program _cl_program/c]
-        [kernel-name bytes?])
-       ()
-       [kernel _cl_kernel/c])
+  (c:-> _cl_program/c bytes? _cl_kernel/c)
+  (program kernel-name)
   @{}])
 
 ;;;; clCreateKernelsInProgram
@@ -73,7 +72,8 @@
                  [else
                   (error 'clRetainKernel "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clRetainKernel (->d ([kernel _cl_kernel/c]) () [_ void]) @{}])
+ [proc-doc/names clRetainKernel (c:-> _cl_kernel/c void)
+                 (kernel) @{}])
 (define-opencl clReleaseKernel
   (_fun [kernel : _cl_kernel]
         -> [status : _cl_int]
@@ -83,7 +83,8 @@
                  [else
                   (error 'clReleaseKernel "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clReleaseKernel (->d ([kernel _cl_kernel/c]) () [_ void]) @{}])
+ [proc-doc/names clReleaseKernel (c:-> _cl_kernel/c void)
+           (kernel) @{}])
 
 ;;;;
 (define (clSetKernelArg-return status)
@@ -115,13 +116,10 @@
             -> [status : _cl_int]
             -> (clSetKernelArg-return status)))
     (provide/doc
-     [proc-doc
+     [proc-doc/names
       clSetKernelArg:_type
-      (->d ([kernel _cl_kernel/c]
-            [arg-num _cl_uint/c]
-            [val _type/c])
-           ()
-           [_ void])
+      (c:-> _cl_kernel/c _cl_uint/c _type/c void)
+      (kernel arg-num val)
       @{}])))
 
 ; XXX Make sure this is complete
@@ -138,13 +136,10 @@
         -> [status : _cl_int]
         -> (clSetKernelArg-return status)))
 (provide/doc
- [proc-doc
+ [proc-doc/names
   clSetKernelArg:local
-  (->d ([kernel _cl_kernel/c]
-        [arg-num _cl_uint/c]
-        [arg_size _size_t/c])
-       ()
-       [_ void])
+  (c:-> _cl_kernel/c _cl_uint/c _size_t/c void)
+  (kernel arg-num arg_size)
   @{}])
 
 ;;;; clGetKernelInfo

@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -40,15 +41,10 @@
               (error 'clCreateBuffer "Invalid error code: ~e"
                      errcode_ret)])))
 (provide/doc
- [proc-doc clCreateBuffer
-           (([ctxt _cl_context/c]
-             [mem-flags _cl_mem_flags/c]
-             [size _size_t/c]
-             [host-ptr _void*/null/c])
-            ()
-            . ->d .
-            [buffer _cl_mem/c])
-           @{}])
+ [proc-doc/names clCreateBuffer
+                 (c:-> _cl_context/c  _cl_mem_flags/c _size_t/c _void*/null/c _cl_mem/c)
+                 (ctxt mem-flags size host-ptr)
+                 @{}])
 
 ;;;;
 (define-syntax-rule (define-clEnqueueReadBuffer-like clEnqueueReadBuffer)
@@ -86,18 +82,11 @@
                (error 'clEnqueueReadBuffer "Invalid error code: ~e"
                       status)])))
     (provide/doc
-     [proc-doc clEnqueueReadBuffer
-               (([cq _cl_command_queue/c]
-                 [buffer _cl_mem/c]
-                 [blocking? _cl_bool/c]
-                 [offset _size_t/c]
-                 [cb _size_t/c]
-                 [ptr _void*/c]
-                 [wait-list (vectorof _cl_event/c)])
-                ()
-                . ->d .
-                [evt _cl_event/c])
-               @{}])))
+     [proc-doc/names
+      clEnqueueReadBuffer
+      (c:-> _cl_command_queue/c _cl_mem/c _cl_bool/c _size_t/c _size_t/c _void*/c (vectorof _cl_event/c) _cl_event/c)
+      (cq buffer blocking? offset cb ptr wait-list)
+      @{}])))
 
 (define-clEnqueueReadBuffer-like clEnqueueReadBuffer)
 (define-clEnqueueReadBuffer-like clEnqueueWriteBuffer)
@@ -139,18 +128,11 @@
            (error 'clEnqueueCopyBuffer "Invalid error code: ~e"
                   status)])))
 (provide/doc
- [proc-doc clEnqueueCopyBuffer
-           (([cq _cl_command_queue/c]
-             [src _cl_mem/c]
-             [dst _cl_mem/c]
-             [src_offset _size_t/c]
-             [dst_offset _size_t/c]
-             [cb _size_t/c]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            [evt _cl_event/c])
-           @{}])
+ [proc-doc/names
+  clEnqueueCopyBuffer
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_mem/c _size_t/c _size_t/c _size_t/c (vectorof _cl_event/c) _cl_event/c)
+  (cq src dst src_offset dst_offset cb wait-list)
+  @{}])
 
 ;;;;
 (define-opencl clRetainMemObject
@@ -163,12 +145,11 @@
                  [else
                   (error 'clRetainMemObject "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clRetainMemObject
-           (([memobj _cl_mem/c])
-            ()
-            . ->d .
-            [v void])
-           @{}])
+ [proc-doc/names
+  clRetainMemObject
+  (c:-> _cl_mem/c void)
+  (memobj)
+  @{}])
 
 ;;;;
 (define-opencl clReleaseMemObject
@@ -181,12 +162,11 @@
                  [else
                   (error 'clReleaseMemObject "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clReleaseMemObject
-           (([memobj _cl_mem/c])
-            ()
-            . ->d .
-            [v void])
-           @{}])
+ [proc-doc/names
+  clReleaseMemObject
+  (c:-> _cl_mem/c void)
+  (memobj)
+  @{}])
 
 ;;;;
 
@@ -225,18 +205,11 @@
           [else
            (error 'clCreateImage2D "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc clCreateImage2D
-           (([ctxt _cl_context/c]
-             [mem-flags _cl_mem_flags/c]
-             [format _cl_image_format/c]
-             [image-width _size_t/c]
-             [image-height _size_t/c]
-             [image-row-pitch _size_t/c]
-             [host-ptr _void*/c])
-            ()
-            . ->d .
-            [img _cl_mem/c])
-           @{}])
+ [proc-doc/names
+  clCreateImage2D
+  (c:-> _cl_context/c _cl_mem_flags/c _cl_image_format/c _size_t/c _size_t/c _size_t/c _void*/c _cl_mem/c)
+  (ctxt mem-flags format image-width image-height image-row-pitch host-ptr)
+  @{}])
 
 ;;;;
 (define-opencl clCreateImage3D
@@ -276,20 +249,11 @@
           [else
            (error 'clCreateImage3D "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc clCreateImage3D
-           (([ctxt _cl_context/c]
-             [mem-flags _cl_mem_flags/c]
-             [format _cl_image_format/c]
-             [image-width _size_t/c]
-             [image-height _size_t/c]
-             [image-depth _size_t/c]
-             [image-row-pitch _size_t/c]
-             [image-slice-pitch _size_t/c]
-             [host-ptr _void*/c])
-            ()
-            . ->d .
-            [img _cl_mem/c])
-           @{}])
+ [proc-doc/names
+  clCreateImage3D
+  (c:-> _cl_context/c _cl_mem_flags/c _cl_image_format/c _size_t/c _size_t/c _size_t/c _size_t/c _void*/c _cl_mem/c)
+  (ctxt mem-flags format image-width image-height image-row-pitch image-slice-pitch host-ptr)
+  @{}])
 
 ;;;;
 (define-opencl-count
@@ -346,20 +310,15 @@
                   [else
                    (error 'clEnqueueReadImage "Invalid error code: ~e" status)])))
     (provide/doc
-     [proc-doc clEnqueueReadImage
-               (([cq _cl_command_queue/c]
-                 [image _cl_mem/c]
-                 [blocking? _cl_bool/c]
-                 [origin (vector/c _size_t/c _size_t/c _size_t/c)]
-                 [region (vector/c _size_t/c _size_t/c _size_t/c)]
-                 [row-pitch _size_t/c]
-                 [slice-ptch _size_t/c]
-                 [ptr _void*/c]
-                 [wait-list (vectorof _cl_event/c)])
-                ()
-                . ->d .
-                [evt _cl_event/c])
-               @{}])))
+     [proc-doc/names
+      clEnqueueReadImage
+      (c:-> _cl_command_queue/c _cl_mem/c _cl_bool/c
+            (vector/c _size_t/c _size_t/c _size_t/c)
+            (vector/c _size_t/c _size_t/c _size_t/c) 
+            _size_t/c _size_t/c _void*/c (vectorof _cl_event/c)
+            _cl_event/c)
+      (cq image blocking? origin region row-pitch slice-ptch ptr wait-list)
+      @{}])))
 
 (define-clEnqueueReadImage-like clEnqueueReadImage)
 (define-clEnqueueReadImage-like clEnqueueWriteImage)
@@ -402,18 +361,16 @@
               [else
                (error 'clEnqueueCopyImage "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueCopyImage
-           (([cq _cl_command_queue/c]
-             [src _cl_mem/c]
-             [dst _cl_mem/c] 
-             [src-origin (vector/c _size_t/c _size_t/c _size_t/c)]
-             [dst-origin (vector/c _size_t/c _size_t/c _size_t/c)]
-             [region (vector/c _size_t/c _size_t/c _size_t/c)]            
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            [evt _cl_event/c])
-           @{}])
+ [proc-doc/names
+  clEnqueueCopyImage
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_mem/c
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vectorof _cl_event/c) 
+        _cl_event/c)
+  (cq src dst src-origin dst-origin region wait-list)
+  @{}])
 
 ;;;;
 (define-opencl clEnqueueCopyImageToBuffer
@@ -449,18 +406,16 @@
               [else
                (error 'clEnqueueCopyImageToBuffer "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueCopyImageToBuffer
-           (([cq _cl_command_queue/c]
-             [src-image _cl_mem/c]
-             [dst-buffer _cl_mem/c] 
-             [src-origin (vector/c _size_t/c _size_t/c _size_t/c)]
-             [region (vector/c _size_t/c _size_t/c _size_t/c)]
-             [dst-offset _size_t/c]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            [evt _cl_event/c])
-           @{}])
+ [proc-doc/names
+  clEnqueueCopyImageToBuffer
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_mem/c 
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vector/c _size_t/c _size_t/c _size_t/c) 
+        _size_t/c 
+        (vectorof _cl_event/c)
+        _cl_event/c)
+  (cq src-image dst-buffer src-origin region dst-offset wait-list)
+  @{}])
 ;;;;
 (define-opencl clEnqueueCopyBufferToImage
   (_fun [command_queue : _cl_command_queue]
@@ -495,18 +450,15 @@
               [else
                (error 'clEnqueueCopyBufferToImage "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueCopyBufferToImage
-           (([cq _cl_command_queue/c]
-             [src-buffer _cl_mem/c]
-             [dst-image _cl_mem/c] 
-             [src-offset _size_t/c] 
-             [dst-origin (vector/c _size_t/c _size_t/c _size_t/c)]
-             [region (vector/c _size_t/c _size_t/c _size_t/c)]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            [evt _cl_event/c])
-           @{}])
+ [proc-doc/names
+  clEnqueueCopyBufferToImage
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_mem/c _size_t/c
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vectorof _cl_event/c)
+        _cl_event/c)
+  (cq src-buffer dst-image src-offset dst-origin region wait-list)
+  @{}])
 ;;;;
 (define-opencl clEnqueueMapBuffer
   (_fun [command_queue : _cl_command_queue]
@@ -543,19 +495,12 @@
           [else
            (error 'clEnqueueMapBuffer "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc clEnqueueMapBuffer
-           (([cq _cl_command_queue/c]
-             [buffer _cl_mem/c]
-             [blocking? _cl_bool/c]
-             [map-flags _cl_map_flags/c]
-             [offset _size_t/c]
-             [cb _size_t/c]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            (values [evt _cl_event/c]
-                    [ptr _void*/c]))
-           @{}])
+ [proc-doc/names
+  clEnqueueMapBuffer
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_bool/c _cl_map_flags/c _size_t/c _size_t/c (vectorof _cl_event/c)
+        (values _cl_event/c _void*/c))
+  (cq buffer blocking? map-flags offset cb wait-list)
+  @{}])
 ;;;;
 (define-opencl clEnqueueMapImage
   (_fun [command_queue : _cl_command_queue]
@@ -596,21 +541,15 @@
           [else
            (error 'clEnqueueMapImage "Invalid error code: ~e" errcode_ret)])))
 (provide/doc
- [proc-doc clEnqueueMapImage
-           (([cq _cl_command_queue/c]
-             [image _cl_mem/c]
-             [blocking? _cl_bool/c]
-             [map-flags _cl_map_flags/c]
-             [origin (vector/c _size_t/c _size_t/c _size_t/c)]
-             [region (vector/c _size_t/c _size_t/c _size_t/c)]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            (values [image_row_pitch _size_t/c]
-                    [image_slice_pitch _size_t/c]
-                    [event _cl_event/c]
-                    [region-ptr _void*/c]))
-           @{}])
+ [proc-doc/names
+  clEnqueueMapImage
+  (c:-> _cl_command_queue/c _cl_mem/c _cl_bool/c _cl_map_flags/c
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vector/c _size_t/c _size_t/c _size_t/c)
+        (vectorof _cl_event/c)
+        (values _size_t/c _size_t/c _cl_event/c _void*/c))
+  (cq image blocking? map-flags origin region wait-list)
+  @{}])
 
 ;;;;
 (define-opencl clEnqueueUnmapMemObject
@@ -640,15 +579,11 @@
           [else
            (error 'clEnqueueUnmapMemObject "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clEnqueueUnmapMemObject
-           (([cq _cl_command_queue/c]
-             [memobj _cl_mem/c]
-             [mapped-ptr _void*/c]
-             [wait-list (vectorof _cl_event/c)])
-            ()
-            . ->d .
-            [evt _cl_event/c])
-           @{}])
+ [proc-doc/names
+  clEnqueueUnmapMemObject
+  (c:-> _cl_command_queue/c _cl_mem/c _void*/c (vectorof _cl_event/c) _cl_event/c)
+  (cq memobj mapped-ptr wait-list)
+  @{}])
 
 ;;;;
 (define-opencl-info clGetMemObjectInfo

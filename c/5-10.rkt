@@ -1,6 +1,7 @@
 #lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
+         (prefix-in c: racket/contract)
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
@@ -24,7 +25,8 @@
              [else
               (error 'clFlush "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clFlush (->d ([cq _cl_command_queue/c]) () [_ void]) @{}])
+ [proc-doc/names clFlush (c:-> _cl_command_queue/c void)
+                 (cq) @{}])
 ;;;;
 (define-opencl clFinish
   (_fun [command_queue : _cl_command_queue]
@@ -39,4 +41,6 @@
              [else
               (error 'clFinish "Invalid error code: ~e" status)])))
 (provide/doc
- [proc-doc clFinish (->d ([cq _cl_command_queue/c]) () [_ void]) @{}])
+ [proc-doc/names
+  clFinish (c:-> _cl_command_queue/c void)
+  (cq) @{}])
