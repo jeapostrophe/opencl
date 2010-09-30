@@ -1,6 +1,5 @@
 #lang racket/base
 (require ffi/unsafe)
-(unsafe!)
 
 (define opencl-path
   (case (system-type)

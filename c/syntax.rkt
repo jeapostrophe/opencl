@@ -1,5 +1,6 @@
 #lang at-exp racket/base
 (require ffi/unsafe
+         ffi/unsafe/cvector
          (except-in racket/contract ->)
          racket/local
          (for-syntax racket/base

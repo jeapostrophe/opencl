@@ -3,10 +3,9 @@
           scribble/basic
           unstable/planet
           unstable/scribble
-          unstable/require
           (for-label ffi/unsafe
-                     (this-package-in c)
-                     (this-package-in racket))
+                     "../c.rkt"
+                     "../racket.rkt")
           (for-label "../c.rkt"))
 
 @title[#:tag "C" #:style 'toc]{C API Reference}

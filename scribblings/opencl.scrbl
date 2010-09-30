@@ -4,10 +4,9 @@
           scribble/extract
           unstable/planet
           unstable/scribble
-          unstable/require
           (for-label ffi/unsafe
-                     (this-package-in c)
-                     (this-package-in racket)))
+                     "../c.rkt"
+                     "../racket.rkt"))
 
 @title[#:tag "top"]{OpenCL}
 @author[(author+email "Jay McCarthy" "jay@racket-lang.org")]

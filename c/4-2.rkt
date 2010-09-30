@@ -1,5 +1,6 @@
 #lang racket/base
 (require ffi/unsafe
+         ffi/unsafe/cvector
          (file "include/cl.rkt")
          (file "syntax.rkt")
          (file "types.rkt"))

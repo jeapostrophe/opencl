@@ -1,5 +1,6 @@
 #lang racket
 (require ffi/unsafe
+         ffi/unsafe/cvector
          (prefix-in c: racket/contract))
 
 (define ((cvector-of? type) cv)

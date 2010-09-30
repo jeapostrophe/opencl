@@ -2,7 +2,6 @@
 (require (planet jaymccarthy/opencl/racket)
          ffi/unsafe
          racket/runtime-path)
-(unsafe!)
 
 (define PADDING 32)
 (define GROUP_DIMX 32)

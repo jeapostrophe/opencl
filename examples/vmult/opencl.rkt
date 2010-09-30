@@ -2,7 +2,6 @@
 (require (planet jaymccarthy/opencl/c)
          (planet jaymccarthy/opencl/racket)
          ffi/unsafe)
-(unsafe!)
 
 (define HOW-MANY (read)) 
 (define input-v (malloc _float HOW-MANY 'raw))

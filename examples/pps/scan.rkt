@@ -2,7 +2,6 @@
 (require (planet jaymccarthy/opencl/racket)
          ffi/unsafe
          racket/runtime-path)
-(unsafe!)
 
 (define (cvector->vector cv)
   (list->vector (cvector->list cv)))

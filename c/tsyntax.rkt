@@ -112,13 +112,19 @@
                               @{Represents a structure value of a particular kind of OpenCL object.})
                    (thing-doc _id-pointer ctype?
                               @{Represents a pointer to a particular kind of OpenCL object.})
-                   (proc-doc make-id (->d ([field _type/c] ...) () [_ _id/c])
-                             @{Constructs a @racket[_id] value.})
-                   (proc-doc _id-field (->d ([obj _id/c]) () [_ _type/c])
-                             @{Extracts the @racket[field] of a @racket[_id] value.})
+                   (proc-doc/names make-id 
+                                   (-> _type/c ... _id/c)
+                                   ((field ...) ())
+                                   @{Constructs a @racket[_id] value.})
+                   (proc-doc/names _id-field 
+                                   (-> _id/c _type/c)
+                                   ((obj) ())
+                                   @{Extracts the @racket[field] of a @racket[_id] value.})
                    ...
-                   (proc-doc set-_id-field! (->d ([obj _id/c] [v _type/c]) () [_ void])
-                             @{Sets the @racket[field] of a @racket[_id] value.})
+                   (proc-doc/names set-_id-field! 
+                                   (-> _id/c _type/c _void)
+                                   ((obj v) ())
+                                   @{Sets the @racket[field] of a @racket[_id] value.})
                    ...
                    (thing-doc _id/c contract?
                               @{A contract for @racket[_id] values.})

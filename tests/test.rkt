@@ -2,7 +2,6 @@
 (require ffi/unsafe
          "../c.rkt"
          "../racket.rkt")
-(unsafe!)
 
 (define current-indent (make-parameter 0))
 (define-syntax-rule (indent e ...)
