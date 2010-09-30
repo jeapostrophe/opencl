@@ -5,10 +5,10 @@
           unstable/planet
           unstable/scribble
           unstable/require
-          (for-label racket/foreign
+          (for-label ffi/unsafe
                      (this-package-in c)
                      (this-package-in racket))
-          (for-label racket/foreign
+          (for-label ffi/unsafe
                      "../../c/types.rkt"))
 
 @title[#:tag "Types"]{Types}

@@ -5,7 +5,7 @@
           unstable/planet
           unstable/scribble
           unstable/require
-          (for-label racket/foreign
+          (for-label ffi/unsafe
                      (this-package-in c)
                      (this-package-in racket)))
 

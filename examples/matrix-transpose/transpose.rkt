@@ -1,6 +1,6 @@
 #lang racket
 (require (planet jaymccarthy/opencl/racket)
-         racket/foreign
+         ffi/unsafe
          racket/runtime-path)
 (unsafe!)
 

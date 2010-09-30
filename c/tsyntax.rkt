@@ -1,5 +1,5 @@
 #lang at-exp racket/base
-(require racket/foreign
+(require ffi/unsafe
          (except-in racket/contract ->)
          (for-syntax racket/base
                      racket/function)

@@ -1,7 +1,7 @@
 #lang racket
 (require (planet jaymccarthy/opencl/c)
          (planet jaymccarthy/opencl/racket)
-         racket/foreign)
+         ffi/unsafe)
 (unsafe!)
 
 (define HOW-MANY (read)) 

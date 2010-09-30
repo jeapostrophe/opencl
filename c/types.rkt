@@ -1,5 +1,5 @@
 #lang racket/base
-(require racket/foreign
+(require ffi/unsafe
          (for-syntax racket
                      syntax/parse
                      unstable/syntax)

@@ -1,5 +1,5 @@
 #lang racket/base
-(require racket/foreign
+(require ffi/unsafe
          (file "include/cl.rkt")
          (file "syntax.rkt")
          (file "types.rkt"))

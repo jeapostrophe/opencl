@@ -1,5 +1,5 @@
 #lang racket
-(require racket/foreign
+(require ffi/unsafe
          "../c.rkt"
          "../racket.rkt")
 (unsafe!)
