@@ -2,11 +2,9 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          unstable/planet
           unstable/scribble
-          (for-label ffi/unsafe
-                     "../../c.rkt"
-                     "../../racket.rkt"
+          (for-label (except-in ffi/unsafe ->)
+                     racket
                      "../../c/types.rkt"))
 
 @title[#:tag "Types"]{Types}

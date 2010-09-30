@@ -1,8 +1,5 @@
 #lang racket/base
 (require ffi/unsafe
-         (for-syntax racket
-                     syntax/parse
-                     unstable/syntax)
          (except-in racket/contract ->)
          (file "include/cl.rkt")
          (file "tsyntax.rkt"))
@@ -14,23 +11,6 @@
 (define-opencl-alias _cl_int _int32 exact-integer?)
 (define-opencl-alias _cl_ulong _uint64 exact-nonnegative-integer?)
 (define-opencl-alias _cl_float _float inexact-real?)
-
-(define-syntax (define-opencl-vector-alias stx)
-  (syntax-parse 
-   stx
-   [(_ _type:id N:number)
-    (let ([Nnum (syntax->datum #'N)])
-      (with-syntax
-          ([(fi ...)
-            (for/list ([i (in-range Nnum)])
-              (format-id stx "f~a" i))]
-           [_typeN
-            (format-id stx "~a~a" #'_type Nnum)])
-        (syntax/loc stx
-          (begin
-            (define-cstruct _typeN
-              ([fi _type] ...))
-            (provide _typeN)))))]))
 
 (define-opencl-vector-alias _cl_float 4)
 

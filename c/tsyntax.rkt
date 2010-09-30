@@ -3,7 +3,9 @@
          (except-in racket/contract ->)
          (prefix-in c: racket/contract)
          (for-syntax racket/base
-                     racket/function)
+                     racket/function
+                     syntax/parse
+                     unstable/syntax)
          (file "util.rkt"))
 (require scribble/srcdoc)
 (require/doc racket/base
@@ -44,8 +46,11 @@
                      @{A list of valid options for @racket[_type]. Its value is @racket['(value ...)].}))))
 
 (define-for-syntax (stxformat fmt stx . others)
-  (datum->syntax stx (string->symbol (apply format fmt (syntax->datum stx) 
-                                            (map syntax->datum others)))))
+  (datum->syntax stx 
+                 (string->symbol 
+                  (apply format fmt (syntax->datum stx) 
+                         (map syntax->datum others)))
+                 stx))
 
 (define-syntax (define-opencl-pointer stx)
   (syntax-case stx ()
@@ -83,12 +88,13 @@
   (syntax-case stx ()
     [(_ _id ([field _type] ...))
      (with-syntax ([id (datum->syntax 
-                        stx 
+                        #'_id 
                         (string->symbol 
                          (substring 
                           (symbol->string
                            (syntax->datum #'_id))
-                          1)))])
+                          1))
+                        #'_id)])
        (with-syntax ([_id/c (stxformat "~a/c" #'_id)]
                      [_id-pointer (stxformat "~a-pointer" #'_id)]
                      [id? (stxformat "~a?" #'id)]
@@ -123,7 +129,7 @@
                                    @{Extracts the @racket[field] of a @racket[_id] value.})
                    ...
                    (proc-doc/names set-_id-field! 
-                                   (c:-> _id/c _type/c _void)
+                                   (c:-> _id/c _type/c void)
                                    (obj v)
                                    @{Sets the @racket[field] of a @racket[_id] value.})
                    ...
@@ -149,9 +155,24 @@
                  (thing-doc _opencl_type_vector/c contract?
                             @{A contract for vectors of @racket[_opencl_type] values.})))))]))
 
+(define-syntax (define-opencl-vector-alias stx)
+  (syntax-parse 
+   stx
+   [(_ _type:id N:number)
+    (let ([Nnum (syntax->datum #'N)])
+      (with-syntax
+          ([(fi ...)
+            (for/list ([i (in-range Nnum)])
+              (format-id stx "f~a" i))]
+           [_typeN
+            (format-id #'_type "~a~a" #'_type Nnum #:source #'_type)])
+        (syntax/loc stx
+          (define-opencl-cstruct _typeN ([fi _type] ...)))))]))
+
 (provide define-opencl-bitfield
          define-opencl-enum
          define-opencl-pointer
          define-opencl-cstruct
          define-opencl-alias
+         define-opencl-vector-alias
          (for-syntax stxformat))

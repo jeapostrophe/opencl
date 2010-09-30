@@ -2,11 +2,8 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          unstable/planet
           unstable/scribble
           (for-label ffi/unsafe
-                     "../../c.rkt"
-                     "../../racket.rkt"
                      "../../c/types.rkt"
                      "../../c/4.rkt"
                      "../../c/4-1.rkt"

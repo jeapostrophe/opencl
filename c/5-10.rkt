@@ -5,7 +5,6 @@
          scribble/srcdoc  
          (file "include/cl.rkt")
          (file "lib.rkt")
-         (file "syntax.rkt")
          (file "types.rkt"))
 (require/doc racket/base
              scribble/manual

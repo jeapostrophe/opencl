@@ -251,8 +251,8 @@
 (provide/doc
  [proc-doc/names
   clCreateImage3D
-  (c:-> _cl_context/c _cl_mem_flags/c _cl_image_format/c _size_t/c _size_t/c _size_t/c _size_t/c _void*/c _cl_mem/c)
-  (ctxt mem-flags format image-width image-height image-row-pitch image-slice-pitch host-ptr)
+  (c:-> _cl_context/c _cl_mem_flags/c _cl_image_format/c _size_t/c _size_t/c _size_t/c _size_t/c _size_t/c _void*/c _cl_mem/c)
+  (ctxt mem-flags format image-width image-height image-depth image-row-pitch image-slice-pitch host-ptr)
   @{}])
 
 ;;;;

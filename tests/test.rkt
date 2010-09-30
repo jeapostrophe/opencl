@@ -1,5 +1,6 @@
 #lang racket
 (require ffi/unsafe
+         ffi/unsafe/cvector
          "../c.rkt"
          "../racket.rkt")
 
