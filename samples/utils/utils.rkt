@@ -21,7 +21,7 @@
 
 (define (fillArray data size)
   (for ([i (in-range size)])
-    (ptr-set! data _cl_float i (* 42087 (random)))))
+    (ptr-set! data _cl_float i (* 123 (random)))))
 
 (define (roundUp groupSize globalSize)
   (define r (remainder globalSize groupSize))
