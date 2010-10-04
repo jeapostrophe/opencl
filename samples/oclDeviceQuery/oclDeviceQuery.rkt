@@ -1,5 +1,5 @@
 #lang racket
-(require "../../c.ss")
+(require "../../c.rkt")
 (require "../utils/utils.rkt")
 (require ffi/cvector)
 (require ffi/unsafe/cvector)
