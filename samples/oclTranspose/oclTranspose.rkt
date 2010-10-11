@@ -15,13 +15,55 @@
     (for ([x (in-range sizeX)])
       (ptr-set! reference _float (+ y (* x sizeY)) (ptr-ref data _float (+ x (* y sizeX)))))))
 
-(define (transposeGPU kernel useLocalMem h_idata h_odata sizeX sizeY commandQueue)
-  (print "transposeGPU"))
+(define (transposeGPU kernelName useLocalMem h_idata h_odata sizeX sizeY commandQueue context program)
+  ;size of memory required to store the matrix
+  (define memSize (* sizeX sizeY (ctype-sizeof _float)))
+  
+  ;allocate device memory and copy host to device memory
+  (define d_idata (clCreateBuffer context '(CL_MEM_READ_ONLY CL_MEM_COPY_HOST_PTR) memSize h_idata))
+  ;create buffer to store output
+  (define d_odata (clCreateBuffer context 'CL_MEM_WRITE_ONLY memSize #f))
+  
+  ;create the naive transpose kernel
+  (define kernel (clCreateKernel program kernelName))
+  ;set the args values for the naive kernel
+  (clSetKernelArg:_cl_mem kernel 0 d_odata)
+  (clSetKernelArg:_cl_mem kernel 1 d_idata)
+  (clSetKernelArg:_cl_int kernel 2 0)
+  (clSetKernelArg:_cl_int kernel 3 sizeX)
+  (clSetKernelArg:_cl_int kernel 4 sizeY)
+  (when useLocalMem (clSetKernelArg:local kernel 5 (* (+ BLOCK_DIM 1) BLOCK_DIM (ctype-sizeof _float))))
+  
+  ;set up execution configuration
+  (define localSize (make-vector 2 BLOCK_DIM))
+  (define globalSize (vector (roundUp BLOCK_DIM sizeX) (roundUp BLOCK_DIM sizeY)))
+  
+  ;execute the kernel numIterations times
+  (define numIterations 100)
+  (printf "~nProcessing a ~a by ~a matrix of floats...~n~n" sizeX sizeY)
+  (for ([i (in-range -1 numIterations)])
+    ;Start time measurement after warmup
+    (when (= i 0) (deltaT 0))
+    (clEnqueueNDRangeKernel commandQueue kernel 2 globalSize localSize (make-vector 0)))
+  ;Block CPU till GPU is done
+  (clFinish commandQueue)
+  (define time (/ (deltaT 0) numIterations))
+  (printf "time to complete: ~a~n" (real->decimal-string time 3))
+  
+  ;Copy back to host
+  (clEnqueueReadBuffer commandQueue d_odata 'CL_TRUE 0 memSize h_odata (make-vector 0))
+  
+  ;clean up
+  (clReleaseMemObject d_idata)
+  (clReleaseMemObject d_odata)
+  (clReleaseKernel kernel))
+  
+  
 
 (define (runTest)
   (define sizeX 2048)
   (define sizeY 2048)
-  (define memSize (* 2048 2048 (ctype-sizeof _float)))
+  (define memSize (* sizeX sizeY (ctype-sizeof _float)))
   
   ;get platform
   (define platform (cvector-ref (clGetPlatformIDs:vector) 0))
@@ -40,14 +82,14 @@
   (define program (clCreateProgramWithSource context (make-vector 1 sourceBytes)))
   (clBuildProgram program (cvector->vector devices)  #"-cl-fast-relaxed-math")
   
-  (transposeGPU "transpose_naive" #f h_idata h_odata sizeX sizeY commandQueue)
+  (transposeGPU #"transpose_naive" #f h_idata h_odata sizeX sizeY commandQueue context program)
   
   (define reference (malloc memSize 'raw))
   (compute-gold reference h_idata sizeX sizeY)
   (display "\nComparing results with CPU computation... \n\n")
   (printf "~a~n~n" (if (compareArrays reference h_odata (* sizeX sizeY)) "Passed" "Failed"))
   
-  (transposeGPU "transpose" #t h_idata h_odata sizeX sizeY commandQueue)
+  (transposeGPU #"transpose" #t h_idata h_odata sizeX sizeY commandQueue context program)
   
   (display "\nComparing results with CPU computation... \n\n")
   (printf "~a~n~n" (if (compareArrays reference h_odata (* sizeX sizeY)) "Passed" "Failed"))
