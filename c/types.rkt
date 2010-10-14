@@ -13,6 +13,7 @@
 (define-opencl-alias _cl_float _float inexact-real?)
 
 (define-opencl-vector-alias _cl_float 4)
+(define-opencl-vector-alias _cl_uint 4)
 
 (define-opencl-enum _cl_bool _cl_uint _cl_bool-values _cl_bool/c
   (CL_FALSE CL_TRUE))
