@@ -22,12 +22,11 @@
 (define (setupBinarySearch)
   (define inputSizeBytes (* length (ctype-sizeof _cl_uint)))
   (set! input (malloc inputSizeBytes 'raw))
-  (define max (* length 20))
   (ptr-set! input _cl_uint 0 0)
   (for ([i (in-range 1 length)])
     (ptr-set! input _cl_uint i (+ (ptr-ref input _cl_uint (- i 1)) (remainder (random 100) 2))))
   (set! output (malloc (ctype-sizeof _cl_uint4) 'raw))
-  (printArray "Sorted Input" input length))
+  (print-array "Sorted Input" input length))
 
 
 (define (setupCL)
@@ -38,8 +37,7 @@
 
 (define (runCLKernels)
   (define device (cvector-ref devices 0))
-  (define kernelWorkGroupSize (clGetKernelWorkGroupInfo:generic kernel device 'CL_KERNEL_WORK_GROUP_SIZE))
-  (define localThreads (if (< kernelWorkGroupSize 256) kernelWorkGroupSize 256))
+  (define localThreads (optimum-threads kernel device 256))
   (define numSubdivisions (/ length localThreads))
   (when (< numSubdivisions localThreads) (set! numSubdivisions localThreads))
   (define globalThreads numSubdivisions)
@@ -119,7 +117,8 @@
   (define verificationInput (malloc (* length (ctype-sizeof _cl_uint)) 'raw))
   (memcpy verificationInput input (* length (ctype-sizeof _cl_uint)))
   (define verified (binarySearchCPUReference verificationInput))
-  (printf "~n~a~n" (if verified "Passed" "Failed")))
+  (printf "~n~a~n" (if verified "Passed" "Failed"))
+  (free verificationInput))
 
 (define (print-stats)
   (printf "~nLength: ~a, Setup Time: ~a, Kernel Time: ~a, Total Time: ~a~n"

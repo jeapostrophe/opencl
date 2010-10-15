@@ -7,14 +7,24 @@
 (provide cvector->vector)
 (provide init-cl)
 (provide time-real)
-(provide printArray)
+(provide print-array)
+(provide fill-random:_cl_uint)
+(provide optimum-threads)
 
-(define (printArray arrayName arrayData length)
-  (define numElementsToPrint (if (< 256 length) 256 length))
+(define (optimum-threads kernel device desired)
+  (define kernelWorkGroupSize (clGetKernelWorkGroupInfo:generic kernel device 'CL_KERNEL_WORK_GROUP_SIZE))
+  (if (< kernelWorkGroupSize desired) kernelWorkGroupSize desired))
+
+(define (fill-random:_cl_uint input length [max 255])
+  (for ([i (in-range length)])
+    (ptr-set! input _cl_uint i (random (add1 max)))))
+
+(define (print-array arrayName arrayData length [howMuch 256])
+  (define numElementsToPrint (if (< howMuch length) howMuch length))
   (printf "~n~a:~n" arrayName)
   (for ([i (in-range numElementsToPrint)])
     (printf "~a " (ptr-ref arrayData _cl_uint i)))
-  (display "\n"))
+  (display (if (< numElementsToPrint length) "...\n" "\n")))
 
 (define (time-real proc)
   (define-values (a b t c) (time-apply proc '()))
