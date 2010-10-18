@@ -1,5 +1,6 @@
 #lang at-exp racket/base
 (require ffi/unsafe
+         racket/bool
          (except-in racket/contract ->)
          (prefix-in c: racket/contract)
          (for-syntax racket/base
@@ -17,7 +18,10 @@
                                          ...)
                                  _cl_bitfield))
          (define the-symbols '(value ...))
-         (define symbol/c (apply symbols the-symbols))
+         (define (symbol/c x) 
+           (and (symbol? x) 
+                (or (symbol=? 'value x)
+                    ...)))
          (define _type/c (or/c symbol/c (listof symbol/c)))
          (define valid-options the-symbols)
          (provide/doc

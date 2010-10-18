@@ -23,6 +23,9 @@
 (define-ctype-numeric-predicate _uint64? 0 CL_ULONG_MAX)
 (define-ctype-numeric-predicate _float? CL_FLT_MIN CL_FLT_MAX)
 (define-ctype-numeric-predicate _double? CL_DBL_MIN CL_DBL_MAX)
+; XXX
+(define _long? number?)
+(define _intptr/c _long?)
 
 (define-opencl-alias _cl_char _int8 _int8?)
 (define-opencl-alias _cl_uchar _uint8 _uint8?)
@@ -65,6 +68,9 @@
 
 (define-opencl-enum _cl_device_info _cl_uint _cl_device_info-values _cl_device_info/c
   (CL_DEVICE_TYPE CL_DEVICE_VENDOR_ID CL_DEVICE_MAX_COMPUTE_UNITS CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS CL_DEVICE_MAX_WORK_GROUP_SIZE CL_DEVICE_MAX_WORK_ITEM_SIZES CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE CL_DEVICE_MAX_CLOCK_FREQUENCY CL_DEVICE_ADDRESS_BITS CL_DEVICE_MAX_READ_IMAGE_ARGS CL_DEVICE_MAX_WRITE_IMAGE_ARGS CL_DEVICE_MAX_MEM_ALLOC_SIZE CL_DEVICE_IMAGE2D_MAX_WIDTH CL_DEVICE_IMAGE2D_MAX_HEIGHT CL_DEVICE_IMAGE3D_MAX_WIDTH CL_DEVICE_IMAGE3D_MAX_HEIGHT CL_DEVICE_IMAGE3D_MAX_DEPTH CL_DEVICE_IMAGE_SUPPORT CL_DEVICE_MAX_PARAMETER_SIZE CL_DEVICE_MAX_SAMPLERS CL_DEVICE_MEM_BASE_ADDR_ALIGN CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE CL_DEVICE_SINGLE_FP_CONFIG CL_DEVICE_GLOBAL_MEM_CACHE_TYPE CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE CL_DEVICE_GLOBAL_MEM_CACHE_SIZE CL_DEVICE_GLOBAL_MEM_SIZE CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE CL_DEVICE_MAX_CONSTANT_ARGS CL_DEVICE_LOCAL_MEM_TYPE CL_DEVICE_LOCAL_MEM_SIZE CL_DEVICE_ERROR_CORRECTION_SUPPORT CL_DEVICE_PROFILING_TIMER_RESOLUTION CL_DEVICE_ENDIAN_LITTLE CL_DEVICE_AVAILABLE CL_DEVICE_COMPILER_AVAILABLE CL_DEVICE_EXECUTION_CAPABILITIES CL_DEVICE_QUEUE_PROPERTIES CL_DEVICE_NAME CL_DEVICE_VENDOR CL_DRIVER_VERSION CL_DEVICE_PROFILE CL_DEVICE_VERSION CL_DEVICE_EXTENSIONS CL_DEVICE_PLATFORM))
+
+(define-opencl-bitfield _cl_device_address_info _cl_bitfield _cl_device_address_info-values _cl_device_address_info/c
+  ())
 
 (define-opencl-bitfield
   _cl_device_fp_config _cl_bitfield _cl_device_fp_config-values _cl_device_fp_config/c
@@ -130,10 +136,7 @@
 
 (define-opencl-pointer _cl_kernel)
 
-; XXX This is probably wrong on other platforms
-(define-opencl-alias _intptr_t _cl_uint _cl_uint/c)
-
-(define-opencl-alias _cl_context_properties _intptr_t _intptr_t/c)
+(define-opencl-alias _cl_context_properties _intptr _intptr/c)
 
 (define-opencl-cstruct _cl_image_format
   ([image_channel_order _cl_channel_order]
