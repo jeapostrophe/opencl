@@ -169,10 +169,15 @@
         (syntax/loc stx
           (define-opencl-cstruct _typeN ([fi _type] ...)))))]))
 
+(define-syntax-rule (define-opencl-vector-alias* id n ...)
+  (begin (define-opencl-vector-alias id n)
+         ...))
+
 (provide define-opencl-bitfield
          define-opencl-enum
          define-opencl-pointer
          define-opencl-cstruct
          define-opencl-alias
          define-opencl-vector-alias
+         define-opencl-vector-alias*
          (for-syntax stxformat))
