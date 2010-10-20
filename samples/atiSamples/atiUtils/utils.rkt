@@ -10,6 +10,24 @@
 (provide print-array)
 (provide fill-random:_cl_uint)
 (provide optimum-threads)
+(provide compare)
+
+(define (compare refData data length [epsilon 0.001])
+  (define error 0.0)
+  (define ref 0.0)
+  (for ([i (in-range length)])
+    (define refi (ptr-ref refData _cl_float i))
+    (define datai (ptr-ref data _cl_float i))
+    (define diff (- refi datai))
+    (set! error (+ error (* diff diff)))
+    (set! ref (* refi datai)))
+  (define normRef (sqrt ref))
+  (if (< ref 1e-7)
+      #f
+      (begin
+        (let ([normError (sqrt error)])
+          (set! error (/ normError normRef))
+          (< error epsilon)))))
 
 (define (optimum-threads kernel device desired)
   (define kernelWorkGroupSize (clGetKernelWorkGroupInfo:generic kernel device 'CL_KERNEL_WORK_GROUP_SIZE))
