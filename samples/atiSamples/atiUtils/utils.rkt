@@ -10,6 +10,7 @@
 (provide print-array)
 (provide print-array:_cl_float)
 (provide fill-random:_cl_uint)
+(provide fill-random:_cl_float)
 (provide optimum-threads)
 (provide compare)
 
@@ -37,6 +38,10 @@
 (define (fill-random:_cl_uint input length [max 255])
   (for ([i (in-range length)])
     (ptr-set! input _cl_uint i (random (add1 max)))))
+
+(define (fill-random:_cl_float input length [max 10])
+  (for ([i (in-range length)])
+    (ptr-set! input _cl_float i (* max (random)))))
 
 (define (print-array arrayName arrayData length [howMuch 256])
   (define numElementsToPrint (if (< howMuch length) howMuch length))
