@@ -8,6 +8,7 @@
 (provide init-cl)
 (provide time-real)
 (provide print-array)
+(provide print-array:_cl_float)
 (provide fill-random:_cl_uint)
 (provide optimum-threads)
 (provide compare)
@@ -42,6 +43,13 @@
   (printf "~n~a:~n" arrayName)
   (for ([i (in-range numElementsToPrint)])
     (printf "~a " (ptr-ref arrayData _cl_uint i)))
+  (display (if (< numElementsToPrint length) "...\n" "\n")))
+
+(define (print-array:_cl_float arrayName arrayData length [howMuch 256])
+  (define numElementsToPrint (if (< howMuch length) howMuch length))
+  (printf "~n~a:~n" arrayName)
+  (for ([i (in-range numElementsToPrint)])
+    (printf "~a " (ptr-ref arrayData _cl_float i)))
   (display (if (< numElementsToPrint length) "...\n" "\n")))
 
 (define (time-real proc)
