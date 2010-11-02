@@ -126,6 +126,14 @@
 (define-clSetKernelArg clSetKernelArg:_cl_mem _cl_mem _cl_mem/c)
 (define-clSetKernelArg clSetKernelArg:_cl_uint _cl_uint _cl_uint/c)
 (define-clSetKernelArg clSetKernelArg:_cl_int _cl_int _cl_int/c)
+(define-clSetKernelArg clSetKernelArg:_cl_char _cl_char _cl_char/c)
+(define-clSetKernelArg clSetKernelArg:_cl_uchar _cl_uchar _cl_uchar/c)
+(define-clSetKernelArg clSetKernelArg:_cl_short _cl_short _cl_short/c)
+(define-clSetKernelArg clSetKernelArg:_cl_ushort _cl_ushort _cl_ushort/c)
+(define-clSetKernelArg clSetKernelArg:_cl_long _cl_long _cl_long/c)
+(define-clSetKernelArg clSetKernelArg:_cl_ulong _cl_ulong _cl_ulong/c)
+(define-clSetKernelArg clSetKernelArg:_cl_float _cl_float _cl_float/c)
+(define-clSetKernelArg clSetKernelArg:_cl_double _cl_double _cl_double/c)
 
 (define-opencl clSetKernelArg:local
   clSetKernelArg
