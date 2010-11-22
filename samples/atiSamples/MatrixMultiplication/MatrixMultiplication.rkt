@@ -1,6 +1,7 @@
 #lang racket
 (require "../../../c.rkt"
          "../atiUtils/utils.rkt"
+         racket/runtime-path
          ffi/unsafe
          ffi/cvector
          ffi/unsafe/cvector)
@@ -33,14 +34,17 @@
   (set! verificationOutput (malloc inputSizeBytes 'raw))
   (memset verificationOutput 0 inputSizeBytes))
 
+(define-runtime-path kernel-path "MatrixMultiplication_Kernels.cl")
 (define (setupCL)
   (define size (* width height (ctype-sizeof _cl_float)))
-  (set!-values (devices context commandQueue program) (init-cl "MatrixMultiplication_Kernels.cl" #:queueProperties 'CL_QUEUE_PROFILING_ENABLE))
+  (set!-values (devices context commandQueue program) (init-cl kernel-path #:queueProperties 'CL_QUEUE_PROFILING_ENABLE))
   (set! inputBuffer0 (clCreateBuffer context 'CL_MEM_READ_ONLY size #f))
   (clEnqueueWriteBuffer commandQueue inputBuffer0 'CL_TRUE 0 size input0 (make-vector 0))
   (set! inputBuffer1 (clCreateBuffer context 'CL_MEM_READ_ONLY size #f))
   (clEnqueueWriteBuffer commandQueue inputBuffer1 'CL_TRUE 0 size input1 (make-vector 0))
   (set! outputBuffer (clCreateBuffer context 'CL_MEM_WRITE_ONLY size #f))
+  (define s (clGetMemObjectInfo:generic outputBuffer 'CL_MEM_SIZE))
+  (display s)
   (set! kernel (clCreateKernel program #"mmmKernel")))
 
 (define (runCLKernels)
@@ -57,6 +61,7 @@
   (clSetKernelArg:_cl_int kernel 4 width)
   (define event (clEnqueueNDRangeKernel commandQueue kernel 2 globalThreads localThreads (make-vector 0)))
   (clWaitForEvents (vector event))
+  (clFlush commandQueue)
   (define startTime (clGetEventProfilingInfo:generic event 'CL_PROFILING_COMMAND_START))
   (define endTime (clGetEventProfilingInfo:generic event 'CL_PROFILING_COMMAND_END))
   (clReleaseEvent event)

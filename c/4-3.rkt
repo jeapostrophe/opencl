@@ -14,9 +14,13 @@
 
 ;;;;
 (define-opencl clCreateContext  
-  (_fun [properties : _void* = #f
-                    ; XXX This is shaped weird, so I don't know how to get it
-                    #;(_vector i _cl_context_properties)]
+  (_fun (maybe-properties devices) ::
+        [properties : (_vector i _cl_context_properties)
+                    =
+                    ; XXX Is this bad because we can't pass in NULL? Is (vector 0) the same in implementations as NULL?
+                    ;     We may never know.
+                    (or maybe-properties
+                         (vector 0))]
         [num_devices : _cl_uint = (vector-length devices)]
         [devices : (_vector i _cl_device_id)]
         [pfn_notify : _void* = #f
@@ -54,14 +58,19 @@
 (provide/doc
  (proc-doc/names
   clCreateContext
-  (c:-> (vectorof _cl_device_id/c) _cl_context/c)
-  (devices)
+  (c:-> (or/c #f (vectorof _cl_context_properties/c)) (vectorof _cl_device_id/c) _cl_context/c)
+  (properties devices)
   @{}))
 
 ;;;;
 (define-opencl clCreateContextFromType  
-  (_fun [properties : _void* = #f
-                    #;(_vector i _cl_context_properties)]
+  (_fun (maybe-properties device_type) ::
+        [properties : (_vector i _cl_context_properties)
+                    =
+                    (or maybe-properties
+                         (vector 0))
+                    
+                    ]
         [device_type : _cl_device_type]
         [pfn_notify : _void* = #f
                     #;(_fun [errinfo : _bytes]
@@ -100,8 +109,8 @@
 (provide/doc
  (proc-doc/names
   clCreateContextFromType
-  (c:-> _cl_device_type/c _cl_context/c)
-  (device_type)
+  (c:-> (or/c #f (vectorof _cl_context_properties/c)) _cl_device_type/c _cl_context/c)
+  (properties device_type)
   @{}))
 
 ;;;;

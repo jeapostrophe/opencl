@@ -25,7 +25,7 @@
 (define-ctype-numeric-predicate _double? CL_DBL_MIN CL_DBL_MAX)
 ; XXX
 (define _long? number?)
-(define _intptr/c _long?)
+(define _intptr/c (or/c _long? cpointer?))
 
 (define-opencl-alias _cl_char _int8 _int8?)
 (define-opencl-alias _cl_uchar _uint8 _uint8?)
