@@ -24,8 +24,12 @@
 (define-ctype-numeric-predicate _float? CL_FLT_MIN CL_FLT_MAX)
 (define-ctype-numeric-predicate _double? CL_DBL_MIN CL_DBL_MAX)
 ; XXX
+(define _intptr*
+   (make-ctype _pointer
+     (lambda (x) (if (cpointer? x) x (cast x _intptr _pointer)))
+     (lambda (x) (error 'intptr* "can't use as an output type"))))
 (define _long? number?)
-(define _intptr/c (or/c _long? cpointer?))
+(define _intptr*/c (or/c _long? cpointer?))
 
 (define-opencl-alias _cl_char _int8 _int8?)
 (define-opencl-alias _cl_uchar _uint8 _uint8?)
@@ -136,7 +140,7 @@
 
 (define-opencl-pointer _cl_kernel)
 
-(define-opencl-alias _cl_context_properties _intptr _intptr/c)
+(define-opencl-alias _cl_context_properties _intptr* _intptr*/c)
 
 (define-opencl-cstruct _cl_image_format
   ([image_channel_order _cl_channel_order]
