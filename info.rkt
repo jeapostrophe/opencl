@@ -2,7 +2,7 @@
 (define name "OpenCL")
 (define blurb
   (list "An FFI for OpenCL"))
-(define scribblings '(["scribblings/opencl.scrbl" (multi-page)]))
+#;(define scribblings '(["scribblings/opencl.scrbl" (multi-page)]))
 (define categories '(devtools))
 (define primary-file "racket.rkt")
 (define compile-omit-paths '("examples" "tests" "samples"))
