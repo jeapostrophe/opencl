@@ -6,6 +6,7 @@
          (for-syntax racket/base
                      racket/function
                      syntax/parse
+                     racket/syntax
                      unstable/syntax)
          (file "util.rkt"))
 (require scribble/srcdoc)

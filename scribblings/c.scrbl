@@ -1,7 +1,7 @@
 #lang scribble/doc
 @(require scribble/manual
           scribble/basic
-          unstable/scribble
+          planet/scribble
           (for-label "../c.rkt"))
 
 @title[#:tag "C" #:style 'toc]{C API Reference}

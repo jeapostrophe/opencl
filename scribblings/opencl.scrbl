@@ -2,7 +2,7 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          unstable/scribble
+          planet/scribble
           (for-label (except-in ffi/unsafe ->)
                      racket
                      "../c.rkt"
