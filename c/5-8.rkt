@@ -9,7 +9,7 @@
          (file "types.rkt"))
 (require/doc racket/base
              scribble/manual
-             (for-label (file "../../c/types.rkt")))
+             (for-label (file "types.rkt")))
 
 ;;;; clEnqueueMarker
 (define-opencl clEnqueueMarker

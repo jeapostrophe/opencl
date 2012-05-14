@@ -3,7 +3,7 @@
          (file "c.rkt"))
 (require/doc racket/base
              scribble/manual
-             (for-label (file "../c.rkt")))
+             (for-label (file "c.rkt")))
 
 ; XXX Add auto-release on objects w/ refcounts
 ; XXX Add synchronization to events

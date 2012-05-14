@@ -6,7 +6,7 @@
 (require scribble/srcdoc)
 (require/doc racket/base
              scribble/manual
-             (for-label (file "../../c/types.rkt")))
+             (for-label (file "types.rkt")))
 
 ;;; clGetPlatformIDs
 (define-opencl-count
