@@ -10,4 +10,4 @@
 @title[#:tag "Types"]{Types}
 
 @defmodule/this-package[c/types]
-@include-extracted[(file "../../c/types.rkt")]
+@include-extracted["../../c/types.rkt"]

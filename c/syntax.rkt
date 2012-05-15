@@ -6,13 +6,13 @@
          racket/local
          (for-syntax racket/base
                      racket/function)
-         (file "include/cl.rkt")
-         (file "lib.rkt")
-         (file "tsyntax.rkt")
-         (file "types.rkt"))
-(require scribble/srcdoc)
+         "include/cl.rkt"
+         "lib.rkt"
+         "syntax.rkt"
+         "types.rkt")
 (require/doc racket/base
-             scribble/manual)
+             scribble/manual
+             (for-label "types.rkt"))
 
 (define-syntax (define-opencl-info stx)
   (syntax-case stx (args : error variable fixed)

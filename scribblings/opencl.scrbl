@@ -51,4 +51,4 @@ Here are some caveats:
 
 The FFI provides Racket-style names for many of the C API functions.
 
-@include-extracted[(file "../racket.rkt")]
+@include-extracted["../racket.rkt"]

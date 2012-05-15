@@ -1,13 +1,13 @@
 #lang racket/base
 (require ffi/unsafe
          ffi/unsafe/cvector
-         (file "include/cl.rkt")
-         (file "syntax.rkt")
-         (file "types.rkt"))
-(require scribble/srcdoc)
+         scribble/srcdoc
+         "include/cl.rkt"         
+         "syntax.rkt"
+         "types.rkt")
 (require/doc racket/base
              scribble/manual
-             (for-label (file "types.rkt")))
+             (for-label "types.rkt"))
 
 ;;; clGetDeviceIDs
 (define-opencl-count

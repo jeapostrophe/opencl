@@ -4,13 +4,13 @@
          (except-in racket/contract ->)
          (prefix-in c: racket/contract)
          scribble/srcdoc  
-         (file "include/cl.rkt")
-         (file "lib.rkt")
-         (file "syntax.rkt")
-         (file "types.rkt"))
+         "include/cl.rkt"
+         "lib.rkt"
+         "syntax.rkt"
+         "types.rkt")
 (require/doc racket/base
              scribble/manual
-             (for-label (file "types.rkt")))
+             (for-label "types.rkt"))
 
 ;;;;
 (define-opencl clCreateContext  

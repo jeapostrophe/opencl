@@ -8,7 +8,7 @@
                      syntax/parse
                      racket/syntax
                      unstable/syntax)
-         (file "util.rkt"))
+         "util.rkt")
 (require scribble/srcdoc)
 (require/doc racket/base
              scribble/manual)

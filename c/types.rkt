@@ -1,9 +1,9 @@
 #lang racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
-         (file "include/cl.rkt")
-         (file "tsyntax.rkt")
-         (file "constants.rkt"))
+         "include/cl.rkt"
+         "tsyntax.rkt"
+         "constants.rkt")
 (require scribble/srcdoc)
 (require/doc racket/base
              scribble/manual)
