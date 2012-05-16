@@ -6,9 +6,10 @@
          racket/local
          (for-syntax racket/base
                      racket/function)
+         scribble/srcdoc
+         "tsyntax.rkt"
          "include/cl.rkt"
          "lib.rkt"
-         "syntax.rkt"
          "types.rkt")
 (require/doc racket/base
              scribble/manual
