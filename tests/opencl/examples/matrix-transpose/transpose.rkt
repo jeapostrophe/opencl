@@ -1,5 +1,6 @@
 #lang racket
-(require (planet jaymccarthy/opencl/racket)
+(require opencl/racket
+         ffi/cvector
          ffi/unsafe
          racket/runtime-path)
 

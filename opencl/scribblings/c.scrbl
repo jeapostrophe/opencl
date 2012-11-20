@@ -1,12 +1,11 @@
 #lang scribble/doc
 @(require scribble/manual
           scribble/basic
-          planet/scribble
           (for-label "../c.rkt"))
 
 @title[#:tag "C" #:style 'toc]{C API Reference}
 
-@defmodule/this-package[c]
+@defmodule[opencl/c]
 
 The FFI is mostly a transliteration of the C API. There are some arguments that are automatically computed and some C functions are represented in Racket with multiple types for each of their calling patterns. This documentation gives the exhaustive list of bindings and their contracts. Refer to the specification for the semantics of these functions. This documentation is organized around the specification to make this easier.
 

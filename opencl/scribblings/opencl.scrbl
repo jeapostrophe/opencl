@@ -2,7 +2,6 @@
 @(require scribble/manual
           scribble/basic
           scribble/extract
-          planet/scribble
           (for-label (except-in ffi/unsafe ->)
                      racket
                      "../c.rkt"
@@ -47,7 +46,7 @@ Here are some caveats:
 
 @section[#:tag "Racket"]{Racket-style API Reference}
 
-@defmodule/this-package[racket]
+@defmodule[opencl/racket]
 
 The FFI provides Racket-style names for many of the C API functions.
 

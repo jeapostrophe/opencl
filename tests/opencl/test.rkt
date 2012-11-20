@@ -1,8 +1,8 @@
 #lang racket
 (require ffi/unsafe
          ffi/unsafe/cvector
-         "../c.rkt"
-         "../racket.rkt")
+         opencl/c
+         opencl/racket)
 
 (define current-indent (make-parameter 0))
 (define-syntax-rule (indent e ...)

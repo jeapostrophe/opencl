@@ -1,4 +1,4 @@
-#lang planet jaymccarthy/superc
+#lang superc
 (require racket/unsafe/ops)
 
 (define loop (get-ffi-obj 'loop this-lib (_fun _int _pointer -> _void)))

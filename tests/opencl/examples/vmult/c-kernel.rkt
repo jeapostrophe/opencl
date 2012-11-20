@@ -1,4 +1,4 @@
-#lang planet jaymccarthy/superc
+#lang superc
 (require racket/unsafe/ops)
 
 (define kernel (get-ffi-obj 'kernel this-lib (_fun _float -> _float)))

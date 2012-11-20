@@ -1,6 +1,7 @@
 #lang racket
-(require (planet jaymccarthy/opencl/racket)
+(require opencl/racket
          ffi/unsafe
+         ffi/cvector
          racket/runtime-path)
 
 (define (cvector->vector cv)
@@ -21,7 +22,7 @@
 (define iterations 1000)
 (define count (* 1024 1024))
 
-(define float-data (malloc _float count 'raw))
+(define float-data (malloc _float count))
 (for ([i (in-range count)])
   (ptr-set! float-data _float i (* 10 (random))))
 
