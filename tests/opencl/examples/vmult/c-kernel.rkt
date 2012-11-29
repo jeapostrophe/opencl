@@ -1,7 +1,7 @@
 #lang superc
 (require racket/unsafe/ops)
 
-(define kernel (get-ffi-obj 'kernel this-lib (_fun _float -> _float)))
+(define kernel (get-ffi-obj-from-this 'kernel (_fun _float -> _float)))
 
 (define HOW-MANY (read))
 (define the-vector (make-vector HOW-MANY 0))
