@@ -1,7 +1,7 @@
 #lang superc
 (require racket/unsafe/ops)
 
-(define loop (get-ffi-obj 'loop this-lib (_fun _int _pointer -> _void)))
+(define loop (get-ffi-obj-from-this 'loop (_fun _int _pointer -> _void)))
 
 (define HOW-MANY (read))
 (define the-vector (malloc _float HOW-MANY 'raw))
@@ -14,11 +14,12 @@
 
 (free the-vector)
 
-@---------@
-void loop (int how_many, float *input) {
- int i;
- for (i = 0; i < how_many; i++) {
-  input[i] = input[i] * input[i];
+@c{
+ void loop (int how_many, float *input) {
+  int i;
+  for (i = 0; i < how_many; i++) {
+   input[i] = input[i] * input[i];
+  }
+  return;
  }
- return;
 }

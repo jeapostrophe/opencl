@@ -15,7 +15,8 @@
     the-vector i
     (kernel (unsafe-vector-ref the-vector i)))))
 
-@---------@
-float kernel (float e) {
- return e*e;
+@c{
+ float kernel (float e) {
+  return e*e;
+ }
 }
