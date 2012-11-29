@@ -1,5 +1,5 @@
 #lang racket
-(require "../../../c.rkt")
+(require opencl/c)
 (require "../utils/utils.rkt")
 (require ffi/cvector)
 (require ffi/unsafe/cvector)
