@@ -1,4 +1,4 @@
-#lang racket/base
+#lang at-exp racket/base
 (require ffi/unsafe
          (except-in racket/contract ->)
          "include/cl.rkt"
@@ -8,10 +8,11 @@
 (require/doc racket/base
              scribble/manual)
 
-; XXX Add docs, contracts
 (define-syntax-rule (define-ctype-numeric-predicate id min max)
   (begin (define (id x) (and (number? x) (<= min x max)))
-         (provide id)))
+         (provide/doc 
+          (thing-doc id flat-contract?
+                     @{A contract for numbers between @racket['min] and @racket['max].}))))
 
 (define-ctype-numeric-predicate _int8? CL_SCHAR_MIN CL_SCHAR_MAX)
 (define-ctype-numeric-predicate _uint8? 0 CL_UCHAR_MAX)
@@ -30,6 +31,9 @@
      (lambda (x) (error 'intptr* "can't use as an output type"))))
 (define _long? number?)
 (define _intptr*/c (or/c _long? cpointer?))
+(provide/doc
+ (thing-doc _intptr* ctype? @{A ctype for holding pointers as integers.})
+ (thing-doc _intptr*/c flat-contract? @{A contract for @racket[_intptr*]}))
 
 (define-opencl-alias _cl_char _int8 _int8?)
 (define-opencl-alias _cl_uchar _uint8 _uint8?)
