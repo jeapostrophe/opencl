@@ -97,7 +97,7 @@
   (CL_EXEC_KERNEL CL_EXEC_NATIVE_KERNEL))
 
 ; XXX This is probably wrong on other platforms
-(define-opencl-alias _size_t _long exact-nonnegative-integer?)
+(define-opencl-alias _size_t _size exact-nonnegative-integer?)
 (define-opencl-alias _void* _pointer cpointer?)
 (define-opencl-alias _void*/null _pointer (or/c false/c cpointer?))
 
