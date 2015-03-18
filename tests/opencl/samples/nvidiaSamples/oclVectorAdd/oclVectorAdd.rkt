@@ -42,7 +42,7 @@
 
 ;create context
 (display "clCreateContext...\n")
-(define context (clCreateContext (cvector->vector devices)))
+(define context (clCreateContext #f (cvector->vector devices)))
 
 ;create command queue
 (display "clCreateCommandQueue...\n")

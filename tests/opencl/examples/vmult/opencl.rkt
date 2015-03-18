@@ -15,7 +15,7 @@
 (define ds (platform-devices #f 'CL_DEVICE_TYPE_GPU))
 (define d (cvector-ref ds 0))
 
-(define ctxt (clCreateContext (vector d)))
+(define ctxt (clCreateContext #f (vector d)))
 
 (define kernel-source
   (string->bytes/utf-8

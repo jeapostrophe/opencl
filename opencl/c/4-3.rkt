@@ -17,10 +17,8 @@
   (_fun (maybe-properties devices) ::
         [properties : (_vector i _cl_context_properties)
                     =
-                    ; XXX Is this bad because we can't pass in NULL? Is (vector 0) the same in implementations as NULL?
-                    ;     We may never know.
                     (or maybe-properties
-                         (vector 0))]
+                        (vector))]
         [num_devices : _cl_uint = (vector-length devices)]
         [devices : (_vector i _cl_device_id)]
         [pfn_notify : _void* = #f
@@ -41,9 +39,11 @@
           [(= errcode_ret CL_INVALID_PLATFORM)
            (error 'clCreateContext "~e is NULL and no platform could be selected or platform value specified in ~e is not a valid platform"
                   properties properties)]
+          [(= errcode_ret CL_INVALID_PROPERTY)
+           (error 'clCreateContext "if context property name in ~e is not a supported property name, if the value specified for a supported property name is not valid, or if the same property name is specified more than once." properties)]
           [(= errcode_ret CL_INVALID_VALUE)
-           (error 'clCreateContext "One of the following: (a) if context property name in ~e is not a supported property name, if the value specified for a supported property name is not valid, or if the same property name is specified more than once; (b) ~e is NULL; (c) ~e is equal to zero; (d) ~e is NULL but ~e is not NULL"
-                  properties devices num_devices pfn_notify user_data)]
+           (error 'clCreateContext "One of the following: (a) ~e is NULL; (b) ~e is equal to zero; (c) ~e is NULL but ~e is not NULL"
+                  devices num_devices pfn_notify user_data)]
           [(= errcode_ret CL_INVALID_DEVICE)
            (error 'clCreateContext "~e contains an invalid device or are not associated with the specified platform"
                   devices)]

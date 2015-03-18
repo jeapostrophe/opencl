@@ -13,7 +13,7 @@
   (display " clGetDeviceIDs")
   (define devices (clGetDeviceIDs:vector platform 'CL_DEVICE_TYPE_GPU))
   (display " clCreateContext...\n")
-  (define context (clCreateContext (cvector->vector devices)))
+  (define context (clCreateContext #f (cvector->vector devices)))
   (display " clGetDeviceInfo...\n")
   (clGetDeviceInfo:generic (cvector-ref devices 0) 'CL_DEVICE_GLOBAL_MEM_SIZE))
 

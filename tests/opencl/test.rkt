@@ -55,8 +55,12 @@ END
     
     (iprintf "Program infos...~n")
     (indent
-     (for ([pi (in-list valid-program-infos)])
-       (iprintf "~a = ~a~n" pi (program-info program pi))))
+     (for ([pi (in-list valid-program-infos)]
+           [i (in-range 5)])
+       (iprintf "~a = ..." pi)
+       (flush-output)
+       (define piv (program-info program pi))
+       (printf " = ~a\n" piv)))
     
     (iprintf "Command queue infos...~n")
     (indent
@@ -177,7 +181,7 @@ END
           (iprintf "~n")
           (iprintf "Getting context from device: ~e~n" d)
           (indent
-           (local [(define ctxt (clCreateContext (vector d)))]
+           (local [(define ctxt (clCreateContext #f (vector d)))]
              (query-context ctxt)
              (test-context d ctxt)))))
        (iprintf "Getting context from device type: ~e~n" dty)

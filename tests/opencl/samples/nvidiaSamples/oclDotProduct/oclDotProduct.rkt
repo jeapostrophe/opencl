@@ -44,7 +44,7 @@
 (define devices (clGetDeviceIDs:vector platform 'CL_DEVICE_TYPE_GPU))
 
 ;create context
-(define context (clCreateContext (cvector->vector devices)))
+(define context (clCreateContext #f (cvector->vector devices)))
 
 ;create command queue
 (display "clCreateCommandQueue...\n")
