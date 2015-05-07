@@ -3,11 +3,13 @@
 
 (define loop (get-ffi-obj-from-this 'loop (_fun _int _pointer -> _void)))
 
-(define HOW-MANY (read))
+(define TESTING #f)
+(define HOW-MANY (if TESTING (* 10 1024 (expt 2 10)) (read)))
 (define the-vector (malloc _float HOW-MANY 'raw))
 
 (for ([i (in-range HOW-MANY)])
-  (ptr-set! the-vector _float i (read)))
+  (ptr-set! the-vector _float i
+            (if TESTING (random) (read))))
   
 (time
  (loop HOW-MANY the-vector))

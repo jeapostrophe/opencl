@@ -7,7 +7,7 @@
 
 (define TESTING #t)
 
-(define HOW-MANY (if TESTING (* 1024 (expt 2 10)) (read))) 
+(define HOW-MANY (if TESTING (* 10 1024 (expt 2 10)) (read)))
 (define input-v (malloc _float HOW-MANY 'raw))
 (define output-v (malloc _float HOW-MANY 'raw))
 (define how-much-mem (* HOW-MANY (ctype-sizeof _float)))
@@ -23,20 +23,20 @@
 (define kernel-source
   (string->bytes/utf-8
    #<<END
-void __kernel square(                                                       
-   __global float* input,                                              
-   __global float* output,                                             
-   const unsigned int count)                                           
-{                                                                      
-   int i = get_global_id(0);                                           
-   if(i < count)                                                       
-       output[i] = input[i] * input[i];                                 
-}                                                                      
+   void __kernel square(
+__global float* input,
+__global float* output,
+const unsigned int count)
+{
+ int i = get_global_id(0);
+ if(i < count) {
+  output[i] = input[i] * input[i];
+ }                    
+}
 END
    ))
 
-(define program (clCreateProgramWithSource ctxt (vector kernel-source)))            
-(define cq (clCreateCommandQueue ctxt d empty))
+(define program (clCreateProgramWithSource ctxt (vector kernel-source)))
 
 (with-handlers ([exn:fail?
                  (λ (x)
@@ -46,29 +46,44 @@ END
 (define kernel (clCreateKernel program #"square"))
 (define input (clCreateBuffer ctxt 'CL_MEM_READ_ONLY how-much-mem #f))
 (define output (clCreateBuffer ctxt 'CL_MEM_WRITE_ONLY how-much-mem #f))
-(define input-evt
-  (clEnqueueWriteBuffer cq input 'CL_FALSE 0 how-much-mem input-v (vector)))
 
-(clFinish cq)
+(define cq (clCreateCommandQueue ctxt d empty))
+(define input-evt
+  (time
+   (begin (printf "Sending data\n")
+          (begin0
+              (clEnqueueWriteBuffer cq input 'CL_FALSE 0 how-much-mem
+                                    input-v (vector))
+            (clFinish cq)))))
 
 (clSetKernelArg:_cl_mem kernel 0 input)
 (clSetKernelArg:_cl_mem kernel 1 output)
 (clSetKernelArg:_cl_uint kernel 2 HOW-MANY)
 
-(define work-group-size (kernel-work-group-info kernel d 'CL_KERNEL_WORK_GROUP_SIZE))
+(define work-group-size
+  (kernel-work-group-info kernel d 'CL_KERNEL_WORK_GROUP_SIZE))
+
+(printf "work group size is ~a\n" work-group-size)
 
 (define kernel-evt
-  (clEnqueueNDRangeKernel cq kernel 1 
-                          (vector HOW-MANY)
-                          (vector work-group-size)
-                          (vector input-evt)))
-
-(time (clFinish cq))
+  (time
+   (begin
+     (printf "Doing work\n")
+     (begin0
+         (clEnqueueNDRangeKernel cq kernel 1
+                                 (vector HOW-MANY)
+                                 (vector work-group-size)
+                                 (vector input-evt))
+       (clFinish cq)))))
 
 (define output-evt
-  (clEnqueueReadBuffer cq output 'CL_FALSE 0 how-much-mem output-v (vector kernel-evt)))        
-
-(clFinish cq)
+  (time
+   (begin
+     (printf "Reading output\n")
+     (begin0
+         (clEnqueueReadBuffer cq output 'CL_FALSE 0 how-much-mem
+                              output-v (vector kernel-evt))
+       (clFinish cq)))))
 
 (clReleaseMemObject input)
 (clReleaseMemObject output)
