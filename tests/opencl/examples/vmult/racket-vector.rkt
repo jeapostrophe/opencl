@@ -1,4 +1,4 @@
-#lang racket
+#lang racket/base
 
 (define HOW-MANY (read))
 (define the-vector (make-vector HOW-MANY 0))

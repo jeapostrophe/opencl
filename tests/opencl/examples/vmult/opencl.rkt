@@ -1,16 +1,19 @@
-#lang racket
-(require opencl/c
+#lang racket/base
+(require racket/list
+         opencl/c
          opencl/racket
          ffi/unsafe/cvector
          ffi/unsafe)
 
-(define HOW-MANY (read)) 
+(define TESTING #t)
+
+(define HOW-MANY (if TESTING (* 1024 (expt 2 10)) (read))) 
 (define input-v (malloc _float HOW-MANY 'raw))
 (define output-v (malloc _float HOW-MANY 'raw))
 (define how-much-mem (* HOW-MANY (ctype-sizeof _float)))
 
 (for ([i (in-range HOW-MANY)])
-  (ptr-set! input-v _float i (read)))
+  (ptr-set! input-v _float i (if TESTING (random) (read))))
 
 (define ds (platform-devices #f 'CL_DEVICE_TYPE_GPU))
 (define d (cvector-ref ds 0))
@@ -20,7 +23,7 @@
 (define kernel-source
   (string->bytes/utf-8
    #<<END
-__kernel square(                                                       
+void __kernel square(                                                       
    __global float* input,                                              
    __global float* output,                                             
    const unsigned int count)                                           
@@ -35,7 +38,10 @@ END
 (define program (clCreateProgramWithSource ctxt (vector kernel-source)))            
 (define cq (clCreateCommandQueue ctxt d empty))
 
-(clBuildProgram program (vector d) #"")
+(with-handlers ([exn:fail?
+                 (λ (x)
+                   (error 'opencl "Build failure: ~a" (clGetProgramBuildInfo:generic program d 'CL_PROGRAM_BUILD_LOG)))])
+  (clBuildProgram program (vector d) #""))
 
 (define kernel (clCreateKernel program #"square"))
 (define input (clCreateBuffer ctxt 'CL_MEM_READ_ONLY how-much-mem #f))

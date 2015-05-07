@@ -1,16 +1,21 @@
 #!/bin/sh
 
+cd $(dirname $0)
+
 DATA=test.dat
 if ! [ -f ${DATA} ] ; then
-    mzscheme -t make-data.ss > ${DATA}
+    echo Making data
+    racket -t make-data.rkt > ${DATA}
 fi
 
-for VER in scheme-list.ss scheme-vector.ss scheme-unsafe-vector.ss c-kernel.ss c-loop.ss opencl.ss ; do
+for VER in racket-list.rkt racket-vector.rkt racket-unsafe-vector.rkt c-kernel.rkt c-loop.rkt opencl.rkt ; do
     VER_DATA=${VER}.dat
     echo $VER
-    if ! [ -f ${VER_DATA} ] ; then
-	mzscheme -t ${VER} < ${DATA} | tee ${VER_DATA}
+    if [ -f ${VER_DATA} ] ; then
+        cat ${VER_DATA}
     else
-	cat ${VER_DATA}
+        if ! (racket -t ${VER} < ${DATA} | tee ${VER_DATA}) ; then
+            rm ${VER_DATA}
+        fi
     fi
 done
