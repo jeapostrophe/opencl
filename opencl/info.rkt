@@ -1,3 +1,3 @@
 #lang setup/infotab
 (define name "OpenCL")
-(define scribblings '(["scribblings/opencl.scrbl" (multi-page)]))
+(define scribblings '(["scribblings/opencl.scrbl" (multi-page) ("Parallelism")]))
